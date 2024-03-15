@@ -14,7 +14,7 @@ interface FileOrDirectory {
   content?: string;
 }
 
-export function fileSource() {
+function fileSource() {
   let filesAndDirectories: FileOrDirectory[] = [];
   const getFile = (filePath: string) => {
     if (fs.statSync(filePath).isDirectory()) {
