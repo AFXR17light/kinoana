@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import Link from 'next/link'
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "kinoana",
@@ -28,7 +25,7 @@ export default function Layout({
   const { pathFragments, fileOrDir, title } = { ...props };
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         {pathFragments?.length !== 0 ? 
         (pathFragments?.map((fragment: string, index: number) => {
           let cumulativePath = '';
