@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from 'next/link'
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+
+import { LayoutProps } from "./types";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,24 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({
-  children, props,
-}: Readonly<{
-  children: React.ReactNode;
-  props: {
-    pathFragments: string[];
-    fileOrDir: {
-      type: string;
-      path?: string;
-      extension?: string;
-      content?: string;
-    };
-    title?: string;
-  };
-}>) {
-  const { pathFragments, fileOrDir, title } = { ...props };
+  children, pathFragments, fileOrDir, title,
+}: LayoutProps & { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         {pathFragments?.length !== 0 ?
           (pathFragments?.map((fragment: string, index: number) => {
             let cumulativePath = '';

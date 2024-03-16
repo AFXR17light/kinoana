@@ -3,21 +3,15 @@ import path from 'path';
 import { notFound } from "next/navigation";
 import { compileMDX } from 'next-mdx-remote/rsc';
 
+import { FileOrDirectory, LayoutProps } from '../types';
 import Layout from '../layout';
+import Link from 'next/link';
 
-const contentDir = '\\content';
-
-interface FileOrDirectory {
-  type: string;
-  path?: string;
-  extension?: string;
-  content?: string;
-}
+const contentDir = 'content';
 
 async function fileSource() {
   let filesAndDirectories: FileOrDirectory[] = [];
   const getFile = async (filePath: string) => {
-    // console.log('curent path: ', filePath);
     let currentFireOrDir: FileOrDirectory = { type: '', path: '' };
     if ((await fs.stat(filePath)).isDirectory()) {
       currentFireOrDir = { type: 'directory', path: filePath };
@@ -29,20 +23,16 @@ async function fileSource() {
       const fileContent = await fs.readFile(filePath, 'utf8');
       currentFireOrDir = { type: 'file', path: strippedFilePath, extension: filePathObj.ext, content: fileContent };
     }
-    // console.log('------------------ current fod path: ', currentFireOrDir.path);
     filesAndDirectories.push(currentFireOrDir);
   }
-  await getFile(process.cwd() + contentDir);
-  // console.log(filesAndDirectories);
+  await getFile(path.join(process.cwd(), contentDir));
   return filesAndDirectories;
 }
 
-export default async function Page({ params }: { params: { path: string[] } }) {
-  const { path } = params;
+export default async function Page({ params }: { params: { currentPath: string[] } }) {
+  const { currentPath } = params;
   const filesAndDirectories = await fileSource();
-  // console.log(filesAndDirectories[2].path?.replace(process.cwd() + contentDir, ''));
-  // console.log('path: ', '\\' + path.join('\\'));
-  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(process.cwd() + contentDir, '') == (path ? '\\' + path.join('\\') : '\\index'));
+  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '') == (currentPath ? path.join(...currentPath) : '\\index'));
   if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: fileOrDir.content || '',
@@ -50,15 +40,23 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   })
   return (
     <Layout
-      props={{
-        pathFragments: path ? path : [],
-        fileOrDir: fileOrDir,
-        title: frontmatter?.title,
-      }}
+      pathFragments={currentPath ? currentPath : []}
+      fileOrDir={fileOrDir}
+      title={frontmatter?.title}
     >
+      <div>
+        <span>page list: </span>
+        {filesAndDirectories.map((fd) => {
+          return <div key={fd.path}>
+            <Link href={fd.path?.replace(process.cwd() + contentDir, '')}>{fd.path}</Link>
+          </div>
+        })}
+      </div>
+      <br />
       {fileOrDir.content && (fileOrDir.extension === '.mdx' || fileOrDir.extension === '.md') && (
         <div>
-          <div>* {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>
+          <div>current {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>
+          <hr />
           {content}
         </div>
       )}
