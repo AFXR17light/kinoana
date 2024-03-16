@@ -47,13 +47,13 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     //   fileOrDir: fileOrDir,
     //   title: frontmatter?.title,
     // }}
-    >
-      {fileOrDir.content && (fileOrDir.extension === '.mdx' || fileOrDir.extension === '.md') && (
+    >123123
+      {/* {fileOrDir.content && (fileOrDir.extension === '.mdx' || fileOrDir.extension === '.md') && (
         <div>
           <div>* {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>
           {content}
         </div>
-      )}
+      )} */}
     </Layout>
   )
 }
