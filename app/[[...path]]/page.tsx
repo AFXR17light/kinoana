@@ -32,11 +32,10 @@ async function fileSource() {
 export default async function Page({ params }: { params: { path: string[] } }) {
   const { path: currentPath } = params;
   const filesAndDirectories = await fileSource();
-  console.log('currentPath: ', (path.join(...currentPath)))
   filesAndDirectories.map((fd) => {
     console.log(fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1))
   })
-  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (path.join(...currentPath)));
+  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : 'index'));
   if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: fileOrDir.content || '',
@@ -52,7 +51,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
         <span>page list: </span>
         {filesAndDirectories.map((fd) => {
           return <div key={fd.path}>
-            <Link href={fd.path?.replace(process.cwd() + contentDir, '')}>{fd.path}</Link>
+            <Link href={fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1)}>{fd.path}</Link>
           </div>
         })}
       </div>
