@@ -41,11 +41,13 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     options: { parseFrontmatter: true },
   })
   return (
-    <Layout props={{
-      pathFragments: path ? path : [],
-      fileOrDir: fileOrDir,
-      title: frontmatter?.title,
-    }}>
+    <Layout
+    // props={{
+    //   pathFragments: path ? path : [],
+    //   fileOrDir: fileOrDir,
+    //   title: frontmatter?.title,
+    // }}
+    >
       {fileOrDir.content && (fileOrDir.extension === '.mdx' || fileOrDir.extension === '.md') && (
         <div>
           <div>* {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>

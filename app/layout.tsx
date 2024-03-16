@@ -8,25 +8,25 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({
-  children, props,
+  children,
 }: Readonly<{
   children: React.ReactNode;
-  props: {
-    pathFragments: string[];
-    fileOrDir: {
-      type: string;
-      path?: string;
-      extension?: string;
-      content?: string;
-    };
-    title?: string;
-  };
+  // props: {
+  //   pathFragments: string[];
+  //   fileOrDir: {
+  //     type: string;
+  //     path?: string;
+  //     extension?: string;
+  //     content?: string;
+  //   };
+  //   title?: string;
+  // };
 }>) {
-  const { pathFragments, fileOrDir, title } = { ...props };
+  // const { pathFragments, fileOrDir, title } = { ...props };
   return (
     <html lang="en">
       <body>
-        {pathFragments?.length !== 0 ? 
+        {/* {pathFragments?.length !== 0 ? 
         (pathFragments?.map((fragment: string, index: number) => {
           let cumulativePath = '';
           for (let i = 0; i <= index; i++) {
@@ -36,7 +36,7 @@ export default function Layout({
         }))
         : (<Link style={{ fontSize: '2em', fontWeight: 'bold' }} href='/'>/</Link>)}
         <h1>{title}</h1>
-        {fileOrDir && <hr />}
+        {fileOrDir && <hr />} */}
         {children}
       </body>
     </html>
