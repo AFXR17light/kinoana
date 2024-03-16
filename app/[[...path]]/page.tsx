@@ -32,10 +32,9 @@ async function fileSource() {
 export default async function Page({ params }: { params: { path: string[] } }) {
   const { path: currentPath } = params;
   const filesAndDirectories = await fileSource();
-  filesAndDirectories.map((fd) => {
-    console.log(fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1))
-  })
-  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : 'index'));
+  let fileOrDir = filesAndDirectories.find(
+    (fd: FileOrDirectory) =>
+      fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : 'index'));
   if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: fileOrDir.content || '',
