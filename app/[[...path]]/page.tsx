@@ -3,7 +3,7 @@ import path from 'path';
 import { notFound } from "next/navigation";
 import { compileMDX } from 'next-mdx-remote/rsc';
 
-import { FileOrDirectory, LayoutProps } from '../types';
+import { FileOrDirectory } from '../types';
 import Layout from '../layout';
 import Link from 'next/link';
 
@@ -29,10 +29,14 @@ async function fileSource() {
   return filesAndDirectories;
 }
 
-export default async function Page({ params }: { params: { currentPath: string[] } }) {
-  const { currentPath } = params;
+export default async function Page({ params }: { params: { path: string[] } }) {
+  const { path: currentPath } = params;
   const filesAndDirectories = await fileSource();
-  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '') == (currentPath ? path.join(...currentPath) : '\\index'));
+  console.log('currentPath: ', (path.join(...currentPath)))
+  filesAndDirectories.map((fd) => {
+    console.log(fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1))
+  })
+  let fileOrDir = filesAndDirectories.find((fd: FileOrDirectory) => fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (path.join(...currentPath)));
   if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: fileOrDir.content || '',
