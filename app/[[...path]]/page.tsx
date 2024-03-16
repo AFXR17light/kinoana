@@ -3,38 +3,53 @@ import path from 'path';
 import { notFound } from "next/navigation";
 import { compileMDX } from 'next-mdx-remote/rsc';
 
-import { FileOrDirectory } from '../types';
+import { FileSystem } from '../types';
 import Layout from '../layout';
 import Link from 'next/link';
 
 const contentDir = 'content';
 
 async function fileSource() {
-  let filesAndDirectories: FileOrDirectory[] = [];
+  let contents: FileSystem[] = [];
   const getFile = async (filePath: string) => {
-    let currentFireOrDir: FileOrDirectory = { type: '', path: '' };
     if ((await fs.stat(filePath)).isDirectory()) {
-      currentFireOrDir = { type: 'directory', path: filePath };
+      // directory
+      let indexFile, extension;
+      try {
+        indexFile = await fs.readFile(path.join(filePath, 'index.mdx'), 'utf8');
+        extension = 'mdx';
+      } catch (error: any) {
+        if (error.code === 'ENOENT') {
+          // console.error('index.mdx not found in: ', filePath);
+        } else {
+          throw error;
+        }
+      }
+      contents.push({ type: 'directory', path: filePath, content: indexFile, extension: extension });
       const files = await fs.readdir(filePath);
       await Promise.all(files.map(fileName => getFile(path.join(filePath, fileName))));
     } else {
+      // file
       const filePathObj = path.parse(filePath);
-      const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
-      const fileContent = await fs.readFile(filePath, 'utf8');
-      currentFireOrDir = { type: 'file', path: strippedFilePath, extension: filePathObj.ext, content: fileContent };
+      if (filePathObj.name === 'index') {
+        // look for parent directory
+      } else {
+        const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
+        const fileContent = await fs.readFile(filePath, 'utf8');
+        contents.push({ type: 'file', path: strippedFilePath, extension: filePathObj.ext, content: fileContent });
+      }
     }
-    filesAndDirectories.push(currentFireOrDir);
   }
   await getFile(path.join(process.cwd(), contentDir));
-  return filesAndDirectories;
+  return contents;
 }
 
 export default async function Page({ params }: { params: { path: string[] } }) {
   const { path: currentPath } = params;
   const filesAndDirectories = await fileSource();
   let fileOrDir = filesAndDirectories.find(
-    (fd: FileOrDirectory) =>
-      fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : 'index'));
+    (fs: FileSystem) =>
+      fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : ''));
   if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: fileOrDir.content || '',
@@ -48,19 +63,23 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     >
       <div>
         <span>page list: </span>
-        {filesAndDirectories.map((fd) => {
-          return <div key={fd.path}>
-            <Link href={fd.path?.replace(path.join(process.cwd(), contentDir), '').substring(1)}>{fd.path}</Link>
+        {filesAndDirectories.map((fs) => {
+          return <div key={fs.path}>
+            <Link href={fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1)}>
+              * {fs.path?.replace(path.join(process.cwd(), contentDir), '')}
+            </Link>
           </div>
         })}
       </div>
       <br />
-      {fileOrDir.content && (fileOrDir.extension === '.mdx' || fileOrDir.extension === '.md') && (
+      {fileOrDir.content ? (
         <div>
           <div>current {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>
           <hr />
           {content}
         </div>
+      ):(
+        <div>No index.mdx found, default layout (todo).</div>
       )}
     </Layout>
   )

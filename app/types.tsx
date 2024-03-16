@@ -1,4 +1,4 @@
-export interface FileOrDirectory {
+export interface FileSystem {
     type: string;
     path: string;
     extension?: string;
@@ -7,6 +7,6 @@ export interface FileOrDirectory {
 
 export interface LayoutProps {
     pathFragments: string[];
-    fileOrDir: FileOrDirectory;
+    fileOrDir: FileSystem;
     title?: string;
 }
