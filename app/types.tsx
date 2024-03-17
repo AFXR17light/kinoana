@@ -2,7 +2,8 @@ export interface FileSystem {
     type: string;
     path: string;
     extension?: string;
-    content?: string;
+    fileContent?: string;
+    dirContent?: string[];
 }
 
 export interface LayoutProps {

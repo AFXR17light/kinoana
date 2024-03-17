@@ -23,7 +23,10 @@ export default function Layout({
             for (let i = 0; i <= index; i++) {
               cumulativePath += '/' + pathFragments[i];
             }
-            return <Link style={{ fontSize: '2em', fontWeight: 'bold' }} key={fragment} href={cumulativePath}>/{fragment}</Link>
+            return <span key={fragment} style={{ fontSize: '2em', fontWeight: 'bold' }}>
+              {index === 0 ? <Link href={'/'}>/</Link> : '/'}
+              <Link href={cumulativePath}>{fragment}</Link>
+            </span>
           }))
           : (<Link style={{ fontSize: '2em', fontWeight: 'bold' }} href='/'>/</Link>)}
         <h1>{title}</h1>

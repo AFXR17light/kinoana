@@ -8,25 +8,26 @@ import Layout from '../layout';
 import Link from 'next/link';
 
 const contentDir = 'content';
+const fileExtensions = ['.mdx', '.md']; //mdx has higher priority
 
 async function fileSource() {
   let contents: FileSystem[] = [];
   const getFile = async (filePath: string) => {
     if ((await fs.stat(filePath)).isDirectory()) {
       // directory
-      let indexFile, extension;
+      let indexFile, indexExtension;
       try {
-        indexFile = await fs.readFile(path.join(filePath, 'index.mdx'), 'utf8');
-        extension = 'mdx';
-      } catch (error: any) {
-        if (error.code === 'ENOENT') {
-          // console.error('index.mdx not found in: ', filePath);
-        } else {
-          throw error;
+        for (const extension of fileExtensions) {
+          const indexFilePath = path.join(filePath, `index${extension}`);
+          indexFile = await fs.readFile(indexFilePath, 'utf8');
+          indexExtension = extension;
+          break;
         }
+      } catch (error: any) {
+        if (error.code !== 'ENOENT') throw error;
       }
-      contents.push({ type: 'directory', path: filePath, content: indexFile, extension: extension });
       const files = await fs.readdir(filePath);
+      contents.push({ type: 'directory', path: filePath, fileContent: indexFile, extension: indexExtension, dirContent: files });
       await Promise.all(files.map(fileName => getFile(path.join(filePath, fileName))));
     } else {
       // file
@@ -36,7 +37,7 @@ async function fileSource() {
       } else {
         const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
         const fileContent = await fs.readFile(filePath, 'utf8');
-        contents.push({ type: 'file', path: strippedFilePath, extension: filePathObj.ext, content: fileContent });
+        contents.push({ type: 'file', path: strippedFilePath, extension: filePathObj.ext, fileContent: fileContent });
       }
     }
   }
@@ -45,42 +46,37 @@ async function fileSource() {
 }
 
 export default async function Page({ params }: { params: { path: string[] } }) {
-  const { path: currentPath } = params;
+  let { path: currentPath } = params;
+  if (!currentPath) currentPath = [];
   const filesAndDirectories = await fileSource();
   let fileOrDir = filesAndDirectories.find(
     (fs: FileSystem) =>
-      fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath ? path.join(...currentPath) : ''));
+      fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath.length ? path.join(...currentPath) : ''));
   if (!fileOrDir) notFound();
-  const { content, frontmatter } = await compileMDX<{ title: string }>({
-    source: fileOrDir.content || '',
+  const { content, frontmatter } = await compileMDX<{ title: string, hideSubdir?: boolean }>({
+    source: fileOrDir?.fileContent || '',
     options: { parseFrontmatter: true },
   })
   return (
     <Layout
-      pathFragments={currentPath ? currentPath : []}
+      pathFragments={currentPath}
       fileOrDir={fileOrDir}
       title={frontmatter?.title}
     >
-      <div>
-        <span>page list: </span>
-        {filesAndDirectories.map((fs) => {
-          return <div key={fs.path}>
-            <Link href={fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1)}>
-              * {fs.path?.replace(path.join(process.cwd(), contentDir), '')}
-            </Link>
-          </div>
-        })}
-      </div>
-      <br />
-      {fileOrDir.content ? (
+      {(fileOrDir.extension && fileExtensions.includes(fileOrDir.extension)) && (
         <div>
-          <div>current {fileOrDir.type}: &quot;{fileOrDir.path}{fileOrDir.extension}&quot;</div>
-          <hr />
           {content}
         </div>
-      ):(
-        <div>No index.mdx found, default layout (todo).</div>
       )}
+      {!frontmatter?.hideSubdir && fileOrDir.dirContent?.map((dir) => {
+        if ((dir !== 'index.mdx') && (dir !== 'index.md')) return (
+          <div key={dir}>
+            <Link href={`/${[...currentPath, dir.replace(/\.[^/.]+$/, "")].join("/")}`}>
+              * {dir.replace(/\.[^/.]+$/, "")}
+            </Link>
+          </div>
+        );
+      })}
     </Layout>
   )
 }
