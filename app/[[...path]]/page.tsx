@@ -16,25 +16,21 @@ async function fileSource() {
     if ((await fs.stat(filePath)).isDirectory()) {
       // directory
       let indexFile, indexExtension;
-      try {
-        for (const extension of fileExtensions) {
-          const indexFilePath = path.join(filePath, `index${extension}`);
-          indexFile = await fs.readFile(indexFilePath, 'utf8');
-          indexExtension = extension;
-          break;
-        }
-      } catch (error: any) {
-        if (error.code !== 'ENOENT') throw error;
-      }
       const files = await fs.readdir(filePath);
-      contents.push({ type: 'directory', path: filePath, fileContent: indexFile, extension: indexExtension, dirContent: files });
+      if (files.includes('index.mdx') || files.includes('index.md')) {
+        indexFile = await fs.readFile(path.join(filePath, files.includes('index.mdx') ? 'index.mdx' : 'index.md'), 'utf8');
+        indexExtension = files.includes('index.mdx') ? '.mdx' : '.md';
+      }
+      let type = 'directory';
+      if (files.length === 1 && (files[0] === 'index.mdx' || files[0] === 'index.md')) {
+        type = 'file';
+      }
+      contents.push({ type: type, path: filePath, fileContent: indexFile, extension: indexExtension, dirContent: files });
       await Promise.all(files.map(fileName => getFile(path.join(filePath, fileName))));
     } else {
       // file
       const filePathObj = path.parse(filePath);
-      if (filePathObj.name === 'index') {
-        // look for parent directory
-      } else {
+      if (filePathObj.name !== 'index') {
         const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
         const fileContent = await fs.readFile(filePath, 'utf8');
         contents.push({ type: 'file', path: strippedFilePath, extension: filePathObj.ext, fileContent: fileContent });
