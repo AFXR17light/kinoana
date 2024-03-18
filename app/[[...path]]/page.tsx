@@ -43,7 +43,7 @@ async function fileSource() {
 
 export default async function Page({ params }: { params: { path: string[] } }) {
   let { path: currentPath } = params;
-  if (!currentPath) currentPath = [];
+  if (!currentPath || JSON.stringify(currentPath) === JSON.stringify(['index'])) currentPath = [];
   const filesAndDirectories = await fileSource();
   let fileOrDir = filesAndDirectories.find(
     (fs: FileSystem) =>
