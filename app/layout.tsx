@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
-import { LayoutProps } from "./types";
+import { layoutProps } from "./types";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({
-  children, pathFragments, fileOrDir, title,
-}: LayoutProps & { children: React.ReactNode }) {
+  children, pathFragments, source, title,
+}: layoutProps & { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className} style={{ margin: "6%", }}>
@@ -30,7 +30,7 @@ export default function Layout({
           }))
           : (<Link style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }} href='/'>/</Link>)}
         <h1>{title}</h1>
-        {fileOrDir && <hr style={{ border: 'none', borderTop: 'solid .2em grey', borderRadius: '.1em', }} />}
+        {source && <hr style={{ border: 'none', borderTop: 'solid .2em grey', borderRadius: '.1em', }} />}
         {children}
       </body>
     </html>

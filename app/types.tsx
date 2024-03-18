@@ -1,13 +1,12 @@
-export interface FileSystem {
-    type: string;
+export interface source {
     path: string;
     extension?: string;
-    fileContent?: string;
-    dirContent?: string[];
+    content?: string;
+    children?: source[];
 }
 
-export interface LayoutProps {
+export interface layoutProps {
     pathFragments: string[];
-    fileOrDir: FileSystem;
+    source?: source;
     title?: string;
 }
