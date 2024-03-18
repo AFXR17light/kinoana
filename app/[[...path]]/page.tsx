@@ -37,19 +37,19 @@ async function fileSource(filePath: string): Promise<source> {
 }
 
 export default async function Page({ params }: { params: { path: string[] } }) {
-  let { path } = params;
-  if (!path || (JSON.stringify(path) === JSON.stringify(['index']))) path = [];
-  let pathTemp = path;
-  let source = await fileSource(contentDir);
+  let { path: pathFragments } = params;
+  if (!pathFragments || (JSON.stringify(pathFragments) === JSON.stringify(['index']))) pathFragments = [];
+  let pathTemp = pathFragments;
+  let source = await fileSource(path.join(process.cwd(), contentDir));
   let currentSource: source | undefined;
-  const find = (source: source, path: string[]): source | undefined => {
-    if (path.length === 0) return source;
+  const find = (source: source, fpath: string[]): source | undefined => {
+    if (fpath.length === 0) return source;
     else {
-      const fragment = path[0];
+      const fragment = fpath[0];
       const sub = source.children?.find((child) => child?.path?.endsWith(fragment || ''));
       if (!sub) return undefined;
       source = sub;
-      return find(source, path.slice(1));
+      return find(source, fpath.slice(1));
     }
   }
   currentSource = find(source, pathTemp);
@@ -60,7 +60,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   })
   return (
     <Layout
-      pathFragments={path}
+      pathFragments={pathFragments}
       source={currentSource}
       title={frontmatter?.title}
     >
@@ -72,11 +72,11 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       {!frontmatter?.hideSubdir && currentSource.children?.map((child) => {
         return (child &&
           <div key={child.path}>
-            <Link href={child.path.replace(/\\/g, '/').replace('content', '')}>
+            <Link href={child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '')}>
               {!child.children && child.extension && (child.extension === '.md') && icons.md}
               {!child.children && child.extension && (child.extension === '.mdx') && icons.mdx}
               {child.children && icons.folder}
-              {' '} {child.path.replace(/\\/g, '/').replace('content', '').slice(1)}
+              {' '} {child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '').slice(1)}
             </Link>
           </div>
         );
