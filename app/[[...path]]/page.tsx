@@ -1,11 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { notFound } from "next/navigation";
+import Link from 'next/link';
 import { compileMDX } from 'next-mdx-remote/rsc';
 
 import { FileSystem } from '../types';
 import Layout from '../layout';
-import Link from 'next/link';
+import { icons } from '../icons';
 
 const contentDir = 'content';
 const fileExtensions = ['.mdx', '.md']; //mdx has higher priority
@@ -68,7 +69,10 @@ export default async function Page({ params }: { params: { path: string[] } }) {
         if ((dir !== 'index.mdx') && (dir !== 'index.md')) return (
           <div key={dir}>
             <Link href={`/${[...currentPath, dir.replace(/\.[^/.]+$/, "")].join("/")}`}>
-              {'/' + dir.replace(/\.[^/.]+$/, "")}
+              {(dir.endsWith('.md') || dir === 'index') && icons.md}
+              {dir.endsWith('.mdx') && icons.mdx}
+              {!dir.includes('.') && dir !== 'index' && icons.folder}
+              {' '} {dir.replace(/\.[^/.]+$/, "")}
             </Link>
           </div>
         );
