@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath.length ? path.join(...currentPath) : ''));
   console.log('fileOrDir: ', fileOrDir);
   console.log('currentPath: ', currentPath);
-  if (!fileOrDir) notFound();
+  if (fileOrDir === undefined) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string, hideSubdir?: boolean }>({
     source: fileOrDir?.fileContent || '',
     options: { parseFrontmatter: true },
