@@ -16,7 +16,7 @@ export default function Layout({
 }: LayoutProps & { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ margin: "6%", }}>
         {pathFragments?.length !== 0 ?
           (pathFragments?.map((fragment: string, index: number) => {
             let cumulativePath = '';
@@ -30,7 +30,7 @@ export default function Layout({
           }))
           : (<Link style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }} href='/'>/</Link>)}
         <h1>{title}</h1>
-        {fileOrDir && <hr />}
+        {fileOrDir && <hr style={{ border: 'none', borderTop: 'solid .2em grey', borderRadius: '.1em', }} />}
         {children}
       </body>
     </html>

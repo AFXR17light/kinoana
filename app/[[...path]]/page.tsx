@@ -48,13 +48,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   let fileOrDir = filesAndDirectories.find(
     (fs: FileSystem) =>
       fs.path?.replace(path.join(process.cwd(), contentDir), '').substring(1) == (currentPath.length ? path.join(...currentPath) : ''));
-  if (!fileOrDir) {
-    console.log('not found!')
-    console.log('fileOrDir: ', fileOrDir);
-    console.log('currentPath: ', currentPath);
-    console.log('filesAndDirectories: ', filesAndDirectories);
-    notFound();
-  };
+  if (!fileOrDir) notFound();
   const { content, frontmatter } = await compileMDX<{ title: string, hideSubdir?: boolean }>({
     source: fileOrDir?.fileContent || '',
     options: { parseFrontmatter: true },
