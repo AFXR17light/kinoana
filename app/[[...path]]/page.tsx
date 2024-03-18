@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
         if ((dir !== 'index.mdx') && (dir !== 'index.md')) return (
           <div key={dir}>
             <Link href={`/${[...currentPath, dir.replace(/\.[^/.]+$/, "")].join("/")}`}>
-              * {dir.replace(/\.[^/.]+$/, "")}
+              {'/' + dir.replace(/\.[^/.]+$/, "")}
             </Link>
           </div>
         );
