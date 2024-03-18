@@ -28,7 +28,7 @@ async function fileSource(filePath: string): Promise<source> {
     return { path: filePath, extension: indexExtension, content: indexFile, children: children, }; // directory
   } else { // file
     const filePathObj = path.parse(filePath);
-    if (filePathObj.name !== 'index') {
+    if (filePathObj.name !== 'index' && fileExtensions.includes(filePathObj.ext)) {
       const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
       const fileContent = await fs.readFile(filePath, 'utf8');
       return { path: strippedFilePath, extension: filePathObj.ext, content: fileContent }; // file
@@ -54,6 +54,14 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   }
   currentSource = find(source, pathTemp);
   if (!currentSource) return notFound();
+  currentSource.children?.sort((a, b) => {
+    // put directories first, then sort by name
+    if (a.children && !b.children) return -1;
+    if (!a.children && b.children) return 1;
+    if (a.path < b.path) return -1;
+    if (a.path > b.path) return 1;
+    return 0;
+  });
   const { content, frontmatter } = await compileMDX<{ title: string, hideSubdir?: boolean }>({
     source: currentSource?.content || '',
     options: { parseFrontmatter: true },

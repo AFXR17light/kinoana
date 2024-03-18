@@ -25,10 +25,10 @@ export default function Layout({
             }
             return <span key={fragment} style={{ fontSize: '2em', fontWeight: 'bold', }}>
               {index === 0 ? <Link href={'/'} style={{ textDecoration: 'none', }}>/</Link> : '/'}
-              <Link href={cumulativePath} style={{ textDecoration: 'none', }}>{fragment}</Link>
+              {index === pathFragments?.length - 1 ? fragment : <Link href={cumulativePath} style={{ textDecoration: 'none', }}>{fragment}</Link>}
             </span>
           }))
-          : (<Link style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }} href='/'>/</Link>)}
+          : (<span style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }}>/</span>)}
         <h1>{title}</h1>
         {source && <hr style={{ border: 'none', borderTop: 'solid .2em grey', borderRadius: '.1em', }} />}
         {children}
