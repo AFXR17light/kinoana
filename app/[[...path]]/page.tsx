@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
               {!child.children && child.extension && (child.extension === '.md') && icons.md}
               {!child.children && child.extension && (child.extension === '.mdx') && icons.mdx}
               {child.children && icons.folder}
-              {' '} {child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '').slice(1)}
+              {' '} {child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '').slice(1).split('/').pop()}
             </Link>
           </div>
         );
