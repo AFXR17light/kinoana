@@ -8,9 +8,9 @@ import { layoutProps } from "./types";
 import "./globals.css";
 
 export async function generateMetadata({ params: { path } }: { params: { path: string[] }}): Promise<Metadata> {
-  console.log('received', (path && path[path.length - 1]) || '/');
+  // console.log('received', (path && path[path.length - 1]) || '/');
   return {
-    title: (path && path[path.length - 1]) || '/',
+    title: Date.now().toString(16),
     description: 'Kinoana is a personal wiki and blog.',
   }
 }
