@@ -4,7 +4,6 @@ export interface source {
     content?: string;
     children?: source[];
 }
-
 export interface frontmatter {
     title: string;
     date?: string;
@@ -15,4 +14,11 @@ export interface layoutProps {
     pathFragments: string[];
     source?: source;
     title?: string;
+}
+export interface calendarEvent {
+    start: string;
+    end: string;
+    lunar?: boolean;
+    hat?: string | (string | React.ReactElement)[];
+    fx?: string;
 }

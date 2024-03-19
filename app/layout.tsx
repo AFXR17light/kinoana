@@ -6,11 +6,12 @@ const inter = Inter({ subsets: ["latin"] });
 
 import { layoutProps } from "./types";
 import "./globals.css";
+import BackToTopButton from "./components/backToTop";
 
 export async function generateMetadata({ params: { path } }: { params: { path: string[] }}): Promise<Metadata> {
   // console.log('received', (path && path[path.length - 1]) || '/');
   return {
-    title: Date.now().toString(16),
+    title: (path && path[path.length - 1]) || '/',
     description: 'Kinoana is a personal wiki and blog.',
   }
 }
@@ -22,6 +23,7 @@ export default function Layout({
   return (
     <html lang="en">
       <Head>
+        <title>111</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <body className={inter.className} style={{ margin: "6%", }}>
@@ -40,6 +42,7 @@ export default function Layout({
         <h1>{title}</h1>
         {source && <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />}
         {children}
+        {/* <BackToTopButton /> */}
       </body>
     </html>
   );
