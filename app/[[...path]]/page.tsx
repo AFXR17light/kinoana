@@ -67,7 +67,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     options: { parseFrontmatter: true },
   })
   const pathToName = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
-  const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1);
+  const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
   const childLink = (child: source, expand: number = -1) => {
     const href = pathToLink(child.path);
     const name = pathToName(child.path);
