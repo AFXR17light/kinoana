@@ -1,5 +1,4 @@
 ---
-title: content test
 childrenDisplay: content
 ---
 

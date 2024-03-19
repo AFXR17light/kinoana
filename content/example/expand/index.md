@@ -1,5 +1,4 @@
 ---
-title: test expand
 childrenDisplay: expand
 ---
 

@@ -1,5 +1,4 @@
 ---
-title: index
 childrenDisplay: 'none'
 ---
 
