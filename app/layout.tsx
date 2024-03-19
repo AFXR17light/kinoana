@@ -30,7 +30,7 @@ export default function Layout({
           }))
           : (<span style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }}>/</span>)}
         <h1>{title}</h1>
-        {source && <hr style={{ border: 'none', borderTop: 'solid .2em grey', borderRadius: '.1em', }} />}
+        {source && <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />}
         {children}
       </body>
     </html>

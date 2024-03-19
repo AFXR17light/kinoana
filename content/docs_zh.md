@@ -2,4 +2,25 @@
 title: 文档
 ---
 
-这里是文档页面。
+## 简介
+Kinoana 是一个基于 [Next.js](https://nextjs.org/) 的网站，使用 Markdown / MDX 作为源文件，通过文件夹结构生成网站内容。
+
+## 使用
+请 clone 或 folk 仓库以开始使用。
+
+本地开发：  
+1. 安装依赖：`pnpm install`
+2. 启动开发服务器：`pnpm dev`
+3. 访问：`http://localhost:3000`
+
+部署：  
+部署使用 Vercel，将仓库连接到 Vercel 即可。
+
+## 内容管理
+使用 `content` 文件夹存放网站内容，文件夹结构会被转换为网站路由；  
+文件夹内的 `index.md` 或 `index.mdx` 会被转换为该文件夹页面的内容，可在 `frontmatter` 中进行配置。
+
+frontmatter 配置项：
+- `title` 页面标题
+- `date` 页面日期，如 `2024-03-19`
+- `childrenDisplay` 子页面展示方式，可选值：`list`、`content`、`expand`、`none`，默认为 `list`，详见[示例页面](/example)。
