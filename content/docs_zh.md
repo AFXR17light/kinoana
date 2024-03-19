@@ -3,7 +3,7 @@ title: 文档
 ---
 
 ## 简介
-Kinoana 是一个基于 [Next.js](https://nextjs.org/) 的网站，使用 Markdown / MDX 作为源文件，通过文件夹结构生成网站内容。
+Kinoana 是个人博客和知识库系统，基于 [Next.js](https://nextjs.org/) 开发，使用 Markdown / MDX 作为源文件，通过文件夹结构生成网站内容。
 
 ## 使用
 请 clone 或 folk 仓库以开始使用。

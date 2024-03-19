@@ -1,5 +1,5 @@
 ## Introduction
-Kinoana is a website based on [Next.js](https://nextjs.org/), using Markdown / MDX as source files, and generating website content through the folder structure.
+Kinoana is a personal wiki and blog. It is based on [Next.js](https://nextjs.org/), using Markdown / MDX as source files, and generating website content through the folder structure.
 
 ## Usage
 Please clone or fork the repository to start using it.
