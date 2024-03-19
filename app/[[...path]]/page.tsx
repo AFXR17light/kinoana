@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     const href = pathToLink(child.path);
     const name = pathToName(child.path);
     return (
-      <div key={child.path} style={{ margin: `0 0 0.5em ${expand > 0 ? expand : 0}em` }}> {/* top right bottom left */}
+      <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand > 0 ? expand : 0}em` }}> {/* top right bottom left */}
         {!child.children && child.extension &&
           <Link href={href}>
             {child.extension === '.md' && icons.md}
@@ -88,8 +88,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
             <div key={child.path} style={{ marginBottom: '0em' }}>
               {expand > -1 && child?.children?.map((child) => childLink(child, expand + 1))}
             </div>
-          </div>
-        }
+          </div>}
       </div>
     );
   }
