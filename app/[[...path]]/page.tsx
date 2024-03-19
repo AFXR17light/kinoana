@@ -66,11 +66,13 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     source: currentSource?.content || '',
     options: { parseFrontmatter: true },
   })
+  const pathToName = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
+  const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1);
   const childLink = (child: source, expand: number = -1) => {
-    const href = child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
-    const name = child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
+    const href = pathToLink(child.path);
+    const name = pathToName(child.path);
     return (
-      <div key={child.path} style={{ marginLeft: `${expand > 0 ? expand : 0}em` }}>
+      <div key={child.path} style={{ margin: `0 0 0.5em ${expand > 0 ? expand : 0}em` }}> {/* top right bottom left */}
         {!child.children && child.extension &&
           <Link href={href}>
             {child.extension === '.md' && icons.md}
@@ -83,23 +85,29 @@ export default async function Page({ params }: { params: { path: string[] } }) {
               {icons.folder}
               {' ' + name}
             </Link>
-            {expand > -1 && child?.children?.map((child) => childLink(child, expand + 1))}
+            <div key={child.path} style={{ marginBottom: '0em' }}>
+              {expand > -1 && child?.children?.map((child) => childLink(child, expand + 1))}
+            </div>
           </div>
         }
       </div>
     );
   }
   const childContent = async (child: source) => {
-    const { content, frontmatter } = await compileMDX<frontmatter>({
-      source: child?.content || '',
-      options: { parseFrontmatter: true },
-    });
-    return (
-      <div key={child.path}  style={{ border: '1px solid'}}>
-        <h3>{frontmatter?.title}</h3>
-        {content}
-      </div>
-    );
+    if (child?.content) {
+      const { content, frontmatter } = await compileMDX<frontmatter>({
+        source: child?.content || '',
+        options: { parseFrontmatter: true },
+      });
+      return (
+        <div key={child.path}>
+          <div>{pathToName(child.path)}</div>
+          <div style={{ border: '1px solid', borderRadius: '4px', margin: '1em 0', padding: '0 1em', }}>
+            {content}
+          </div>
+        </div>
+      );
+    }
   }
   return (
     <Layout
