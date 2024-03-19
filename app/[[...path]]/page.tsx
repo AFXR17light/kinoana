@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from 'next/link';
 import { compileMDX } from 'next-mdx-remote/rsc';
 
-import { source } from '../types';
+import { source, frontmatter } from '../types';
 import Layout from '../layout';
 import { icons } from '../icons';
 
@@ -62,10 +62,45 @@ export default async function Page({ params }: { params: { path: string[] } }) {
     if (a.path > b.path) return 1;
     return 0;
   });
-  const { content, frontmatter } = await compileMDX<{ title: string, hideSubdir?: boolean }>({
+  const { content, frontmatter } = await compileMDX<frontmatter>({
     source: currentSource?.content || '',
     options: { parseFrontmatter: true },
   })
+  const childLink = (child: source, expand: number = -1) => {
+    const href = child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
+    const name = child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
+    return (
+      <div key={child.path} style={{ marginLeft: `${expand > 0 ? expand : 0}em` }}>
+        {!child.children && child.extension &&
+          <Link href={href}>
+            {child.extension === '.md' && icons.md}
+            {child.extension === '.mdx' && icons.mdx}
+            {' ' + name}
+          </Link>}
+        {child.children &&
+          <div>
+            <Link href={href}>
+              {icons.folder}
+              {' ' + name}
+            </Link>
+            {expand > -1 && child?.children?.map((child) => childLink(child, expand + 1))}
+          </div>
+        }
+      </div>
+    );
+  }
+  const childContent = async (child: source) => {
+    const { content, frontmatter } = await compileMDX<frontmatter>({
+      source: child?.content || '',
+      options: { parseFrontmatter: true },
+    });
+    return (
+      <div key={child.path}  style={{ border: '1px solid'}}>
+        <h3>{frontmatter?.title}</h3>
+        {content}
+      </div>
+    );
+  }
   return (
     <Layout
       pathFragments={pathFragments}
@@ -77,17 +112,12 @@ export default async function Page({ params }: { params: { path: string[] } }) {
           {content}
         </div>
       )}
-      {!frontmatter?.hideSubdir && currentSource.children?.map((child) => {
-        return (child &&
-          <div key={child.path}>
-            <Link href={child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '')}>
-              {!child.children && child.extension && (child.extension === '.md') && icons.md}
-              {!child.children && child.extension && (child.extension === '.mdx') && icons.mdx}
-              {child.children && icons.folder}
-              {' '} {child.path.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').replace('content', '').slice(1).split('/').pop()}
-            </Link>
-          </div>
-        );
+      {currentSource.children?.map((child) => {
+        const display = frontmatter?.childrenDisplay;
+        if (display === 'none') return undefined;
+        else if (display === 'expand') return (childLink(child, 0));
+        else if (display === 'content') return (childContent(child));
+        else return (childLink(child));
       })}
     </Layout>
   )

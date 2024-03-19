@@ -5,6 +5,12 @@ export interface source {
     children?: source[];
 }
 
+export interface frontmatter {
+    title: string;
+    date?: string;
+    hide?: number;
+    childrenDisplay?: string;
+}
 export interface layoutProps {
     pathFragments: string[];
     source?: source;
