@@ -14,7 +14,6 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   if (!pathFragments || (JSON.stringify(pathFragments) === JSON.stringify(['index']))) pathFragments = [];
   let pathTemp = pathFragments;
   let source = await fileSource(path.join(process.cwd(), contentDir), fileExtensions);
-  console.log('source', source);
   let currentSource: source | undefined;
   const find = (source: source, fpath: string[]): source | undefined => {
     if (fpath.length === 0) return source;
