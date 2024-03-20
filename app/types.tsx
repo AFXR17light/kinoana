@@ -8,9 +8,10 @@ export interface source {
 export interface frontmatter {
     title?: string;
     date?: string;
-    hide?: number;
+    hide?: boolean;
     preview?: string;
     childrenDisplay?: string | string[];
+    lang?: string;
 }
 export interface layoutProps {
     pathFragments: string[];

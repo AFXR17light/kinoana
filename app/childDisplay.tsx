@@ -1,19 +1,17 @@
 import Link from "next/link";
-import path from "path";
+
 import { source } from "./types";
 import { icons } from "./icons";
 
-const contentDir = "content";
-
-const pathToName = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
-const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
+const pathToName = (inputPath: string) => inputPath.replace(/\\/g, '/').slice(1).split('/').pop();
+const pathToLink = (inputPath: string) => inputPath.replace(/\\/g, '/');
 
 const childDisplay = async (child: source, type: string | string[] = 'list', nesting: number = 0,) => {
-  // type: 'list' | 'expand' | 'content' | 'preview' | 'date' | 'title' | 'none'
+  // type: 'list' | 'expand' | 'content' | 'preview' | 'date' | 'title' | 'none' | 'hide'
   // alias: 'post' -> ['date', 'preview', 'title']
   if (type === 'post') type = ['date', 'preview', 'title'];
   if (typeof type === 'string') type = [type];
-  if (type.includes('none')) return (<></>);
+  if (type.includes('none')) return undefined;
   let expand = false;
   if (type.includes('expand')) expand = true;
   // link
@@ -22,6 +20,7 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
   // content
   const content = child.content;
   const frontmatter = child.frontmatter;
+  if (frontmatter?.hide === true) return undefined;
   return (
     <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting : 0}em` }}> {/* top right bottom left */}
       {/* file */}

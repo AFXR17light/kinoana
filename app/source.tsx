@@ -4,6 +4,9 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 
 import { source, frontmatter } from './types';
 
+const contentDir = "content";
+const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
+
 const compile = async (source: string) => {
     return await compileMDX<frontmatter>({
         source: source,
@@ -11,7 +14,7 @@ const compile = async (source: string) => {
     });
 }
 
-export async function fileSource(filePath: string, fileExtensions: string[]): Promise<source> {
+export async function fileSource(filePath: string = path.join(process.cwd(), contentDir), fileExtensions: string[] = acceptExtensions ): Promise<source> {
     if ((await fs.stat(filePath)).isDirectory()) { // directory
         // index check
         let indexFile, indexExtension;
@@ -30,7 +33,7 @@ export async function fileSource(filePath: string, fileExtensions: string[]): Pr
         let singleIndex = false;
         if (files.length === 1 && (files[0] === 'index.mdx' || files[0] === 'index.md')) singleIndex = true;
         return { // directory
-            path: filePath,
+            path: filePath.replace(path.join(process.cwd(), contentDir), ''),
             extension: indexExtension,
             content: content,
             frontmatter: frontmatter,
@@ -39,7 +42,7 @@ export async function fileSource(filePath: string, fileExtensions: string[]): Pr
     } else { // file
         const filePathObj = path.parse(filePath);
         if (filePathObj.name !== 'index' && fileExtensions.includes(filePathObj.ext)) {
-            const strippedFilePath = path.join(filePathObj.dir, filePathObj.name);
+            const strippedFilePath = path.join(filePathObj.dir, filePathObj.name).replace(path.join(process.cwd(), contentDir), '');
             const fileContent = await fs.readFile(filePath, 'utf8');
             const { frontmatter, content: compiledContent } = await compile(fileContent);
             return { path: strippedFilePath, extension: filePathObj.ext, content: compiledContent, frontmatter: frontmatter }; // file

@@ -1,4 +1,3 @@
-import path from 'path';
 import { notFound } from "next/navigation";
 
 import { source } from '../types';
@@ -6,14 +5,11 @@ import Layout from '../layout';
 import childDisplay from '../childDisplay';
 import { fileSource } from '../source';
 
-const contentDir = 'content';
-const fileExtensions = ['.mdx', '.md']; //mdx has higher priority
-
 export default async function Page({ params }: { params: { path: string[] } }) {
   let { path: pathFragments } = params;
   if (!pathFragments || (JSON.stringify(pathFragments) === JSON.stringify(['index']))) pathFragments = [];
   let pathTemp = pathFragments;
-  let source = await fileSource(path.join(process.cwd(), contentDir), fileExtensions);
+  let source = await fileSource();
   let currentSource: source | undefined;
   const find = (source: source, fpath: string[]): source | undefined => {
     if (fpath.length === 0) return source;
@@ -42,11 +38,9 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       source={currentSource}
       title={currentSource.frontmatter?.title}
     >
-      {(currentSource.extension && fileExtensions.includes(currentSource.extension)) && (
-        <div>
-          {currentSource.content}
-        </div>
-      )}
+      <div>
+        {currentSource.content}
+      </div>
       {currentSource.children?.map((child) => childDisplay(child, currentSource?.frontmatter?.childrenDisplay))}
     </Layout>
   )
