@@ -1,5 +1,5 @@
 ---
-title: test index
+title: 独立页面
 ---
 
 这是一个路径以 index 结尾的页面。  

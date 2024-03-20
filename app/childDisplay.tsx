@@ -24,28 +24,20 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
   return (
     <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting : 0}em` }}> {/* top right bottom left */}
       {/* file */}
-      {!child.children && child.extension &&
-        <>
-          <Link href={href}>
-            {child.extension === '.md' && icons.md}
-            {child.extension === '.mdx' && icons.mdx}
-            {' ' + name}
-            {type.includes('title') && ` | ${frontmatter?.title && frontmatter.title}`}
-          </Link>
-          {type.includes('date') && <span>{' | '}{frontmatter?.date && new Date(frontmatter.date).toLocaleDateString()}</span>}
-          {type.includes('preview') && <div style={{ margin: '.5em 0 1em 1.1em' }}>{frontmatter?.preview}</div>}{/* top right bottom left */}
-        </>}
-      {/* directory */}
-      {child.children &&
-        <>
-          <Link href={href}>
-            {icons.folder}
-            {' ' + name}
-          </Link>
-          <div key={child.path} style={{ marginBottom: '0em' }}>
-            {expand && child.children.map((child) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
-          </div>
-        </>}
+      {(child.children || child.extension) && <>
+        <Link href={href}>
+          {!child.children && child.extension === '.md' && icons.md}
+          {!child.children && child.extension === '.mdx' && icons.mdx}
+          {child.children && icons.folder}
+          {' ' + name}
+          {type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
+        </Link>
+        {type.includes('date') && frontmatter?.date && <span>{' | '}{frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}</span>}
+        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 1.1em' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
+        {child.children && <div key={child.path} style={{ marginBottom: '0em' }}>
+          {expand && child.children.map((child: source) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
+        </div>}
+      </>}
       {/* content */}
       {type.includes('content') && content &&
         <div key={child.path}>

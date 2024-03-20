@@ -1,4 +1,5 @@
 ---
+title: 隐藏所有子页面
 childrenDisplay: 'none'
 ---
 

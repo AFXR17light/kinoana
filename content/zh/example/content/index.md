@@ -1,4 +1,5 @@
 ---
+title: 内容平铺
 childrenDisplay: content
 ---
 
