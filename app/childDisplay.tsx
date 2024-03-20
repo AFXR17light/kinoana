@@ -9,8 +9,8 @@ const pathToLink = (inputPath: string) => inputPath.replace(/\\/g, '/');
 const childDisplay = async (child: source, type: string | string[] = 'list', nesting: number = 0,) => {
   // type: 'list' | 'expand' | 'content' | 'preview' | 'date' | 'title' | 'none' | 'hide'
   // alias: 'post' -> ['date', 'preview', 'title']
-  if (type === 'post') type = ['date', 'preview', 'title'];
   if (typeof type === 'string') type = [type];
+  if (type.includes('post')) type.push('date', 'preview', 'title');
   if (type.includes('none')) return undefined;
   let expand = false;
   if (type.includes('expand')) expand = true;

@@ -66,12 +66,15 @@ img {
 }
 
 :root {
+  margin: auto;
   max-width: var(--max-width);
   font-size: 1.2em;
+  background: var(--background);
+  background-attachment: fixed, local;
 
+  --background: linear-gradient(165deg, rgb(79, 142, 190),rgb(106, 165, 206), rgb(126, 172, 209), rgb(148, 186, 217), rgb(153, 187, 215), rgb(176, 196, 212), #d6d3c7);
   --grey: 'grey';
   --max-width: 750px;
-  margin: auto;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
@@ -114,6 +117,7 @@ img {
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --background: linear-gradient(165deg, #0c0f1b, #121524, #131624, #192033, #1e273f, #233646, #394133, #665337);
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
@@ -158,12 +162,12 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
 }
 
 a {
