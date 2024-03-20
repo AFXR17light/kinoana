@@ -8,6 +8,7 @@ export interface frontmatter {
     title: string;
     date?: string;
     hide?: number;
+    preview?: string;
     childrenDisplay?: string;
 }
 export interface layoutProps {
