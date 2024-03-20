@@ -24,4 +24,5 @@ frontmatter 配置项：
 - `title` 页面标题
 - `date` 页面日期，如 `2024-03-19`
 - `childrenDisplay` 子页面展示方式，可选值：`list`、`content`、`expand`、`none`，默认为 `list`，详见[示例页面](/example)。
+
 所有 frontmatter 配置项均为可选项，也可以不包含 frontmatter。

@@ -20,4 +20,5 @@ Frontmatter configuration items:
 - `title` Page title
 - `date` Page date, such as `2024-03-19`
 - `childrenDisplay` Display method of subpages, optional values: `list`, `content`, `expand`, `none`, the default is `list`, see [example page](/example).
+
 All the frontmatter configuration items are optional, and can also be without frontmatter.
