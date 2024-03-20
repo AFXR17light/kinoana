@@ -72,7 +72,7 @@ img {
   background: var(--background);
   background-attachment: fixed, local;
 
-  --background: linear-gradient(165deg, hsl(206, 66%, 53%),hsl(205, 71%, 61%), hsl(207, 67%, 66%), hsl(207, 68%, 72%), hsl(207, 64%, 72%), hsl(207, 50%, 76%), hsl(48, 35%, 81%));
+  --background: linear-gradient(165deg, hsl(206, 76%, 53%),hsl(205, 81%, 61%), hsl(207, 77%, 66%), hsl(207, 78%, 72%), hsl(207, 74%, 72%), hsl(207, 60%, 76%), hsl(48, 45%, 81%));
   --grey: 'grey';
   --max-width: 750px;
   --border-radius: 12px;
@@ -117,7 +117,7 @@ img {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: linear-gradient(165deg, hsl(228, 58%, 8%), hsl(230, 53%, 11%),hsl(229, 51%, 11%), hsl(224, 54%, 15%), hsl(224, 55%, 18%), hsl(207, 53%, 21%), hsl(94, 32%, 23%), hsl(36, 50%, 31%));
+    --background: linear-gradient(165deg, hsl(228, 58%, 8%), hsl(230, 53%, 11%),hsl(229, 51%, 11%), hsl(224, 54%, 15%), hsl(224, 55%, 18%), hsl(207, 53%, 21%), hsl(94, 17%, 23%), hsl(36, 50%, 31%));
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
