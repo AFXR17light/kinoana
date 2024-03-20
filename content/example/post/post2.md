@@ -1,7 +1,7 @@
 ---
-title: post 2 title
+title: title 2
 date: 2024-03-19
-preview: post 2 preview
+preview: You can write a short description here.
 ---
 
 This is post 2.

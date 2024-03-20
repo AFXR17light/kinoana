@@ -7,7 +7,6 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 import { source, frontmatter } from '../types';
 import Layout from '../layout';
 import { icons } from '../icons';
-import exp from 'constants';
 
 const contentDir = 'content';
 const fileExtensions = ['.mdx', '.md']; //mdx has higher priority
@@ -71,9 +70,9 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
 
   const childDisplay = async (child: source, type: string | string[] = 'list', nesting: number = 0,) => {
-    // type: 'list' | 'expand' | 'content' | 'preview' | 'date'
-    // alias: 'post' -> ['date', 'preview']
-    if (type === 'post') type = ['date', 'preview'];
+    // type: 'list' | 'expand' | 'content' | 'preview' | 'date' | 'title' | 'none'
+    // alias: 'post' -> ['date', 'preview', 'title']
+    if (type === 'post') type = ['date', 'preview', 'title'];
     if (typeof type === 'string') type = [type];
     if (type.includes('none')) return (<></>);
     let expand = false;
@@ -110,9 +109,10 @@ export default async function Page({ params }: { params: { path: string[] } }) {
               {child.extension === '.md' && icons.md}
               {child.extension === '.mdx' && icons.mdx}
               {' ' + name}
+              {type.includes('title') && ` | ${frontmatter?.title && frontmatter.title}`}
             </Link>
-            {type.includes('date') && <span>{frontmatter?.date}</span>}
-            {type.includes('preview') && <div>{frontmatter?.preview}</div>}
+            {type.includes('date') && <span>{' | '}{frontmatter?.date && new Date(frontmatter.date).toLocaleDateString()}</span>}
+            {type.includes('preview') && <div style={{ margin: '.5em 0 1em 1.1em'}}>{frontmatter?.preview}</div>}{/* top right bottom left */}
           </>}
         {/* directory */}
         {child.children &&

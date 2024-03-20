@@ -1,7 +1,7 @@
 ---
-title: post 3 title
+title: title 3
 date: 2024-03-20
-preview: post 3 preview
+preview: Preview only contains text content.
 ---
 
 This is post 3.

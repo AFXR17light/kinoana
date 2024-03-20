@@ -21,6 +21,56 @@ hr {
   margin: 1.5em 0;
 }
 
+blockquote {
+  /* color: var(--normal); */
+  font-family: "Times, SimSun, serif";
+  margin: 0;
+  padding-left: 1.2em;
+  /* border-left: 0.25em solid var(--grey); */
+}
+
+ul, ol {
+  padding-left: 1.2em;
+  margin: 1em 0;
+}
+
+li {
+  /* padding-left: 0.2em; */
+  margin: 1em 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-style: hidden;
+  box-shadow: 0 0 0 .075em;
+  border-radius: .2em;
+  margin: .75em .075em;
+}
+
+table td, table th {
+  border: .075em solid;
+  padding: .25em .5em;
+}
+
+table tr:nth-child(even), table thead {
+  /* background-color: var(--bgHover); */
+}
+
+code {
+  overflow: auto;
+  font-family: 'Courier New', Courier, monospace;
+  /* background: var(--bgHover); */
+  border-radius: .2em;
+}
+
+pre {
+  border-radius: .4em;
+}
+
+img {
+  max-width: 100%;
+}
+
 :root {
   max-width: var(--max-width);
   font-size: 1.2em;
