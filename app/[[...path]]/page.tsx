@@ -7,6 +7,7 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 import { source, frontmatter } from '../types';
 import Layout from '../layout';
 import { icons } from '../icons';
+import exp from 'constants';
 
 const contentDir = 'content';
 const fileExtensions = ['.mdx', '.md']; //mdx has higher priority
@@ -68,37 +69,31 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   })
   const pathToName = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/').slice(1).split('/').pop();
   const pathToLink = (inputPath: string) => inputPath.replace(path.join(process.cwd(), contentDir), '').replace(/\\/g, '/');
-  const childLink = (child: source, expand: number = -1) => {
+
+  const childDisplay = async (child: source, type: string | string[] = 'list', nesting: number = 0,) => {
+    // type: 'list' | 'expand' | 'content' | 'preview' | 'date'
+    // alias: 'post' -> ['date', 'preview']
+    if (type === 'post') type = ['date', 'preview'];
+    if (typeof type === 'string') type = [type];
+    if (type.includes('none')) return (<></>);
+    let expand = false;
+    if (type.includes('expand')) expand = true;
+    // link
     const href = pathToLink(child.path);
     const name = pathToName(child.path);
-    return (
-      <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand > 0 ? expand : 0}em` }}> {/* top right bottom left */}
-        {!child.children && child.extension &&
-          <Link href={href}>
-            {child.extension === '.md' && icons.md}
-            {child.extension === '.mdx' && icons.mdx}
-            {' ' + name}
-          </Link>}
-        {child.children &&
-          <div>
-            <Link href={href}>
-              {icons.folder}
-              {' ' + name}
-            </Link>
-            <div key={child.path} style={{ marginBottom: '0em' }}>
-              {expand > -1 && child?.children?.map((child) => childLink(child, expand + 1))}
-            </div>
-          </div>}
-      </div>
-    );
-  }
-  const childContent = async (child: source) => {
+    // read content
+    let content, frontmatter;
     if (child?.content) {
-      const { content, frontmatter } = await compileMDX<frontmatter>({
-        source: child?.content || '',
+      const result = await compileMDX<frontmatter>({
+        source: child.content,
         options: { parseFrontmatter: true },
       });
-      return (
+      content = result.content;
+      frontmatter = result.frontmatter;
+    }
+    // display: content
+    if (type.includes('content')) {
+      if (content) return (
         <div key={child.path}>
           <div>{pathToName(child.path)}</div>
           <div style={{ border: '1px solid', borderRadius: '4px', margin: '1em 0', padding: '0 1em', }}>
@@ -106,7 +101,39 @@ export default async function Page({ params }: { params: { path: string[] } }) {
           </div>
         </div>
       );
-    }
+    } else return (
+      <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting : 0}em` }}> {/* top right bottom left */}
+        {/* file */}
+        {!child.children && child.extension &&
+          <>
+            <Link href={href}>
+              {child.extension === '.md' && icons.md}
+              {child.extension === '.mdx' && icons.mdx}
+              {' ' + name}
+            </Link>
+            {type.includes('date') && <span>{frontmatter?.date}</span>}
+            {type.includes('preview') && <div>{frontmatter?.preview}</div>}
+          </>}
+        {/* directory */}
+        {child.children &&
+          <>
+            <Link href={href}>
+              {icons.folder}
+              {' ' + name}
+            </Link>
+            <div key={child.path} style={{ marginBottom: '0em' }}>
+              {expand && child.children.map((child) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
+            </div>
+            {type.includes('content') && content &&
+              <div key={child.path}>
+                <div>{pathToName(child.path)}</div>
+                <div style={{ border: '1px solid', borderRadius: '4px', margin: '1em 0', padding: '0 1em', }}>
+                  {content}
+                </div>
+              </div>}
+          </>}
+      </div>
+    );
   }
   return (
     <Layout
@@ -119,13 +146,7 @@ export default async function Page({ params }: { params: { path: string[] } }) {
           {content}
         </div>
       )}
-      {currentSource.children?.map((child) => {
-        const display = frontmatter?.childrenDisplay;
-        if (display === 'none') return undefined;
-        else if (display === 'expand') return (childLink(child, 0));
-        else if (display === 'content') return (childContent(child));
-        else return (childLink(child));
-      })}
+      {currentSource.children?.map((child) => childDisplay(child, frontmatter?.childrenDisplay))}
     </Layout>
   )
 }

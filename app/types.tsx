@@ -9,7 +9,7 @@ export interface frontmatter {
     date?: string;
     hide?: number;
     preview?: string;
-    childrenDisplay?: string;
+    childrenDisplay?: string | string[];
 }
 export interface layoutProps {
     pathFragments: string[];
