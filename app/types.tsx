@@ -1,11 +1,12 @@
 export interface source {
     path: string;
     extension?: string;
-    content?: string;
+    content?: React.ReactElement;
+    frontmatter?: frontmatter;
     children?: source[];
 }
 export interface frontmatter {
-    title: string;
+    title?: string;
     date?: string;
     hide?: number;
     preview?: string;

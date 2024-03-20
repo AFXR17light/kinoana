@@ -1,5 +1,0 @@
----
-title: post
----
-
-A post.
