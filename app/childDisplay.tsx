@@ -8,6 +8,7 @@ const pathToLink = (inputPath: string) => inputPath.replace(/\\/g, '/');
 
 const childDisplay = async (child: source, type: string | string[] = 'list', nesting: number = 0,) => {
   // type: 'list' | 'expand' | 'content' | 'preview' | 'date' | 'title' | 'none' | 'hide'
+  // additional: 'noLink' | 'noIcon'
   // alias: 'post' -> ['date', 'preview', 'title']
   if (typeof type === 'string') type = [type];
   if (type.includes('post')) type.push('date', 'preview', 'title');
@@ -25,13 +26,25 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
     <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting : 0}em` }}> {/* top right bottom left */}
       {/* file */}
       {(child.children || child.extension) && <>
-        <Link href={href}>
-          {!child.children && child.extension === '.md' && icons.md}
-          {!child.children && child.extension === '.mdx' && icons.mdx}
-          {child.children && icons.folder}
-          {' ' + name}
-          {type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
-        </Link>
+        {!type.includes('noLink') &&
+          <Link href={href}>
+            {!type.includes('noIcon') &&
+              <>
+                {!child.children && child.extension === '.md' && icons.md}
+                {!child.children && child.extension === '.mdx' && icons.mdx}
+                {child.children && icons.folder}
+              </>}
+            {' ' + name}{type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
+          </Link>}
+        {type.includes('noLink') && <>
+          {!type.includes('noIcon') &&
+            <>
+              {!child.children && child.extension === '.md' && icons.md}
+              {!child.children && child.extension === '.mdx' && icons.mdx}
+              {child.children && icons.folder}
+            </>}
+          {' ' + name}{type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
+        </>}
         {type.includes('date') && frontmatter?.date && <span>{' | '}{frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}</span>}
         {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 1.1em' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
         {child.children && <div key={child.path} style={{ marginBottom: '0em' }}>
