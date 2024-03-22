@@ -43,5 +43,16 @@ Picture with link:
 
 [![nacho](/nacho.jpg "Nachoneko")](https://amashiro.com)
 
----
 Divider
+
+---
+
+katex:  
+$P(X=k) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k}$
+
+abababa $abababa$  
+abababa  
+aba $ababa$ aba
+
+long words:  
+A Very LongWordThatHasNoBreakingPossibilities a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb

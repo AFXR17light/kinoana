@@ -21,8 +21,10 @@
     "react-cookie": "^7.1.0",
     "react-dom": "^18",
     "rehype": "^13.0.1",
+    "rehype-katex": "^7.0.0",
     "remark": "^15.0.1",
-    "remark-gfm": "3.0.1"
+    "remark-gfm": "3.0.1",
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
