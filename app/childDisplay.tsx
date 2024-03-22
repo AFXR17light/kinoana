@@ -53,7 +53,7 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
           <span style={{ marginLeft: '1.5em', fontFamily: 'serif', color: 'var(--grey)', fontWeight: 'bold' }}>
             {frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}
           </span>}
-        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 1.05em' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
+        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 0' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
         {child.children && <div key={child.path} style={{ marginBottom: '0em' }}>
           {expand && child.children.map((child: source) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
         </div>}
