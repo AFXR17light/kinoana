@@ -24,7 +24,10 @@ export default function Layout({
   return (
     <html lang="en">
       <body className={inter.className} style={{ margin: "6%", overflowX: 'auto', overflowY: 'hidden', }}>
-        <NextTopLoader />
+        <NextTopLoader
+          color="var(--link)"
+          showSpinner={false}
+        />
         {/* <div style={{ overflowX: 'auto', overflowY: 'hidden', }}> */}
         {pathFragments?.length !== 0 ?
           (pathFragments?.map((fragment: string, index: number) => {
