@@ -11,6 +11,7 @@ export interface frontmatter {
     hide?: boolean;
     preview?: string;
     childrenDisplay?: string | string[];
+    sort?: string;
     lang?: string;
 }
 export interface layoutProps {

@@ -24,9 +24,21 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   currentSource = find(source, pathTemp);
   if (!currentSource) return notFound();
   currentSource.children?.sort((a, b) => {
-    // put directories first, then sort by name
+    // put directories first
     if (a.children && !b.children) return -1;
     if (!a.children && b.children) return 1;
+    // if frontmatter.sort includes time, sort by time
+    if (currentSource?.frontmatter?.sort === 'time') {
+      // put child that has frontmatter.date first
+      if (a.frontmatter?.date && !b.frontmatter?.date) return -1;
+      if (!a.frontmatter?.date && b.frontmatter?.date) return 1;
+      // then sort by date
+      if (a.frontmatter?.date && b.frontmatter?.date) {
+        if (a.frontmatter.date > b.frontmatter.date) return -1;
+        if (a.frontmatter.date < b.frontmatter.date) return 1;
+      }
+    }
+    // then sort by name
     if (a.path < b.path) return -1;
     if (a.path > b.path) return 1;
     return 0;

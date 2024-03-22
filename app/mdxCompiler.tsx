@@ -5,12 +5,12 @@ import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
 import rehypePrism from 'rehype-prism-plus'
 import './code.css'
-// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-// import { a11yDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import rehypeExternalLinks from 'rehype-external-links'
 // import { Fancybox } from "@fancyapps/ui"
 // import "@fancyapps/ui/dist/fancybox/fancybox.css"
 
 import { frontmatter } from './types';
+import Archives from './components/Archives';
 
 export default async function compileMdx (source: string) {
     return await compileMDX<frontmatter>({
@@ -19,9 +19,10 @@ export default async function compileMdx (source: string) {
             parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [[remarkGfm, {singleTilde: false}], remarkMath,],
-                rehypePlugins: [ rehypePrism, rehypeKatex, ],
+                rehypePlugins: [ [rehypeExternalLinks, {rel: ['nofollow', 'noopener'], target: ['blank']}], rehypePrism, rehypeKatex, ],
             }
         },
+        components: { Archives }
     });
 }
 
