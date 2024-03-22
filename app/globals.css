@@ -21,6 +21,7 @@ p {
 }
 
 hr {
+  color: var(--grey);
   border: none;
   border-top: .2em dashed;
   margin: 1.5em 0;
@@ -41,14 +42,14 @@ li {
 table {
   border-collapse: collapse;
   border-style: hidden;
-  box-shadow: 0 0 0 .075em;
+  box-shadow: 0 0 0 .075em var(--border);
   border-radius: .2em;
   margin: .75em .075em;
 }
 
 table td,
 table th {
-  border: .075em solid;
+  border: .075em solid var(--bgHover);
   padding: .25em .5em;
 }
 

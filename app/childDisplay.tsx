@@ -61,7 +61,7 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
       {/* content */}
       {type.includes('content') && content &&
         <div key={child.path}>
-          <div style={{ border: '1px solid', borderRadius: '4px', margin: '1em 0', padding: '0 1em', }}>
+          <div style={{ border: '1px solid var(--border)', background: 'var(--bgHover)', borderRadius: '.2em', margin: '1em 0', padding: '0 1em', }}>
             {content}
           </div>
         </div>}

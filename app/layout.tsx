@@ -12,7 +12,7 @@ import BackToTopButton from "./components/backToTop";
 export async function generateMetadata({ params: { path } }: { params: { path: string[] } }): Promise<Metadata> {
   // console.log('received', (path && path[path.length - 1]) || '/');
   return {
-    title: (path && path[path.length - 1]) || '/',
+    title: (path && path[path.length - 1]) || 'Kinoana',
     description: 'Kinoana is a personal wiki and blog.',
   }
 }
@@ -23,7 +23,7 @@ export default function Layout({
   generateMetadata({ params: { path: pathFragments } });
   return (
     <html lang="en">
-      <body className={inter.className} style={{ margin: "6%", overflowX: 'auto', overflowY: 'hidden', }}>
+      <body className={inter.className} style={{ margin: "6%", }}>
         <NextTopLoader
           color="var(--link)"
           showSpinner={false}

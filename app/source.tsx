@@ -1,18 +1,11 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { compileMDX } from 'next-mdx-remote/rsc';
 
-import { source, frontmatter } from './types';
+import { source } from './types';
+import compileMdx from './mdxCompiler';
 
 const contentDir = "content";
 const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
-
-const compile = async (source: string) => {
-    return await compileMDX<frontmatter>({
-        source: source,
-        options: { parseFrontmatter: true },
-    });
-}
 
 export async function fileSource(filePath: string = path.join(process.cwd(), contentDir), fileExtensions: string[] = acceptExtensions ): Promise<source> {
     if ((await fs.stat(filePath)).isDirectory()) { // directory
@@ -26,7 +19,7 @@ export async function fileSource(filePath: string = path.join(process.cwd(), con
         const children = await Promise.all(files.map(fileName => fileSource(path.join(filePath, fileName), fileExtensions)));
         let content, frontmatter;
         if (indexFile) {
-            const result = await compile(indexFile);
+            const result = await compileMdx(indexFile);
             content = result.content;
             frontmatter = result.frontmatter;
         }
@@ -44,7 +37,7 @@ export async function fileSource(filePath: string = path.join(process.cwd(), con
         if (filePathObj.name !== 'index' && fileExtensions.includes(filePathObj.ext)) {
             const strippedFilePath = path.join(filePathObj.dir, filePathObj.name).replace(path.join(process.cwd(), contentDir), '');
             const fileContent = await fs.readFile(filePath, 'utf8');
-            const { frontmatter, content: compiledContent } = await compile(fileContent);
+            const { frontmatter, content: compiledContent } = await compileMdx(fileContent);
             return { path: strippedFilePath, extension: filePathObj.ext, content: compiledContent, frontmatter: frontmatter }; // file
         }
     }
