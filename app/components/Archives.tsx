@@ -27,13 +27,14 @@ const Archives = async () => {
   };
   const flatSource = getFlatSource(originalSource);
   const sortedSource = flatSource.sort((a, b) => {
-    // if no date, sort by name
     // sort by time
     if (a.frontmatter?.date && b.frontmatter?.date) {
+      // has date field first
       if (a.frontmatter.date > b.frontmatter.date) return -1;
       else if (a.frontmatter.date < b.frontmatter.date) return 1;
       else return 0;
     } else {
+      // if no date, sort by name
       if (a.path < b.path) return -1;
       else if (a.path > b.path) return 1;
       else return 0;

@@ -53,24 +53,24 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
           <span style={{ marginLeft: '1.5em', fontFamily: 'serif', color: 'var(--grey)', fontWeight: 'bold' }}>
             {frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}
           </span>}
-        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 0' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
+        {type.includes('preview') && frontmatter?.preview && <span style={{ margin: '.5em 0 1em 0', display: 'block' }}>{frontmatter.preview}</span>}{/* top right bottom left */}
         {child.children && expand &&
-          <div key={child.path} style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', height: '100%', margin: `0.25em 0 0.25em ${nesting * 2 + .5}em`, borderLeft: '3px dashed var(--grey)' }}></div>
+          <span key={child.path} style={{ position: 'relative', display: 'block' }}>
+            <span style={{ position: 'absolute', height: '100%', margin: `0.25em 0 0.25em ${nesting * 2 + .5}em`, borderLeft: '3px dashed var(--grey)' }}/>
             {child.children.map((child: source) => {
-              return <div key={child.path} style={{ margin: '0.5em 0', }}>
+              return <span key={child.path} style={{ margin: '0.5em 0' }}>
                 {(child.children || child.content) && childDisplay(child, type, (expand ? nesting + 1 : -1))}
-              </div>
+              </span>
             })}
-          </div>}
+          </span>}
       </>}
       {/* content */}
       {type.includes('content') && content &&
-        <div key={child.path}>
-          <div style={{ border: '1px solid var(--border)', background: 'var(--bgHover)', borderRadius: '.2em', margin: '1em 0', padding: '0 1em', }}>
+        <span key={child.path}>
+          <span style={{ border: '1px solid var(--border)', background: 'var(--bgHover)', borderRadius: '.2em', margin: '1em 0', padding: '0 1em', display: 'block' }}>
             {content}
-          </div>
-        </div>}
+          </span>
+        </span>}
     </span>
   );
 }
