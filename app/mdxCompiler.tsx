@@ -3,6 +3,8 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
+import rehypePrism from 'rehype-prism-plus'
+import './code.css'
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 // import { a11yDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 // import { Fancybox } from "@fancyapps/ui"
@@ -17,7 +19,7 @@ export default async function compileMdx (source: string) {
             parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [[remarkGfm, {singleTilde: false}], remarkMath,],
-                rehypePlugins: [ rehypeKatex ],
+                rehypePlugins: [ rehypePrism, rehypeKatex, ],
             }
         },
     });
