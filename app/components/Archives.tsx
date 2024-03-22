@@ -26,11 +26,26 @@ const Archives = async () => {
     return `${(dateObj.getMonth() + 1)}-${dateObj.getDate()}`
   };
   const flatSource = getFlatSource(originalSource);
-  flatSource.forEach(source => {
-    if (!source.frontmatter?.date) return;
-    const date = new Date(source.frontmatter.date);
+  const sortedSource = flatSource.sort((a, b) => {
+    // if no date, sort by name
+    // sort by time
+    if (a.frontmatter?.date && b.frontmatter?.date) {
+      if (a.frontmatter.date > b.frontmatter.date) return -1;
+      else if (a.frontmatter.date < b.frontmatter.date) return 1;
+      else return 0;
+    } else {
+      if (a.path < b.path) return -1;
+      else if (a.path > b.path) return 1;
+      else return 0;
+    }
+  });
+  sortedSource.forEach(source => {
+    let date;
+    if (source.frontmatter?.date) {
+      date = new Date(source.frontmatter.date);
+    }
     // seperate year, month and date
-    const year = date.getFullYear().toString();
+    const year = date ? date.getFullYear().toString() : 'undefined';
     // check if there is an object containing the same year
     const existingYearGroup = groupedItems.find(group => group.year === year);
     if (existingYearGroup) {
@@ -41,6 +56,13 @@ const Archives = async () => {
       groupedItems.push({ year, items: [source] });
     }
   })
+  const sortedGroup = groupedItems.sort((a, b) => {
+    if (a.year === 'undefined' && b.year !== 'undefined') return 1;
+    else if (a.year !== 'undefined' && b.year === 'undefined') return -1;
+    else if (a.year > b.year) return -1;
+    else if (a.year < b.year) return 1;
+    else return 0;
+  });
   return (
     <div
       style={{
@@ -54,7 +76,7 @@ const Archives = async () => {
         left: '0',
         height: '100%',
       }} />
-      {groupedItems.map(yearGroup => (
+      {sortedGroup.map(yearGroup => (
         <div key={yearGroup.year}>
           <div style={{ // year
             margin: '3em 0' // up down / leaf right
@@ -89,40 +111,39 @@ const Archives = async () => {
           </div>
           {yearGroup.items.map(item => ( // each item
             <article key={item.path}>
-              <div style={{ borderBottom: '1px solid var(--border)', margin: '1.75em 0 .5em 0.2em', position: 'relative', transition: 'all .2s ease-in-out' }}>
-                <span style={{ // item dot: back
-                  position: 'absolute',
-                  top: '.40em',
-                  left: '-.35em',
-                  width: '0.5em',
-                  height: '0.5em',
-                  backgroundColor: 'var(--normal)',
-                  borderRadius: '50%',
-                }} />
-                <span style={{ // item dot: front
-                  position: 'absolute',
-                  top: '.5em',
-                  left: '-.25em',
-                  width: '0.3em',
-                  height: '0.3em',
-                  backgroundColor: 'var(--grey)',
-                  borderRadius: '50%',
-                }} />
-                <div>
-                  <span style={{ // date
-                    color: 'var(--grey)',
-                    fontFamily: 'Times, SimSun, serif',
-                    margin: '0 .7em 0 .85em',
-                  }}>{monthDate(item.frontmatter?.date)}</span>
-                  {childDisplay(item, 'title')}
-                </div>
-              </div>
+              {item.content && !item.children &&
+                <div style={{ borderBottom: '1px solid var(--border)', margin: '1.75em 0 .5em 0.2em', position: 'relative', transition: 'all .2s ease-in-out' }}>
+                  <span style={{ // item dot: back
+                    position: 'absolute',
+                    top: '.40em',
+                    left: '-.35em',
+                    width: '0.5em',
+                    height: '0.5em',
+                    backgroundColor: 'var(--normal)',
+                    borderRadius: '50%',
+                  }} />
+                  <span style={{ // item dot: front
+                    position: 'absolute',
+                    top: '.5em',
+                    left: '-.25em',
+                    width: '0.3em',
+                    height: '0.3em',
+                    backgroundColor: 'var(--grey)',
+                    borderRadius: '50%',
+                  }} />
+                  <div>
+                    <span style={{ // date
+                      color: 'var(--grey)',
+                      fontFamily: 'Times, SimSun, serif',
+                      margin: '0 .7em 0 .85em',
+                    }}>{monthDate(item.frontmatter?.date)}</span>
+                    {childDisplay(item, 'title')}
+                  </div>
+                </div>}
             </article>
-          ))
-          }
+          ))}
         </div>
-      ))
-      }
+      ))}
     </div>
   )
 }
