@@ -27,14 +27,17 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
       {/* file */}
       {(child.children || child.extension) && <>
         {!type.includes('noLink') &&
-          <Link href={href}>
+          <Link href={href} style={{ fontWeight: 'bold', }}>
             {!type.includes('noIcon') &&
               <>
                 {!child.children && child.extension === '.md' && icons.md}
                 {!child.children && child.extension === '.mdx' && icons.mdx}
                 {child.children && icons.folder}
               </>}
-            {' ' + name}{type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
+            {' ' + name}
+            <span style={{ color: 'var(--grey)' }}>
+              {type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
+            </span>
           </Link>}
         {type.includes('noLink') && <>
           {!type.includes('noIcon') &&
@@ -45,8 +48,12 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
             </>}
           {' ' + name}{type.includes('title') && frontmatter?.title && ` | ${frontmatter.title && frontmatter.title}`}
         </>}
-        {type.includes('date') && frontmatter?.date && <span>{' | '}{frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}</span>}
-        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 1.1em' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
+        {type.includes('date') &&
+          frontmatter?.date &&
+          <span style={{ marginLeft: '1.5em', fontFamily: 'serif', color: 'var(--grey)', fontWeight: 'bold' }}>
+            {frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}
+          </span>}
+        {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 1.05em' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
         {child.children && <div key={child.path} style={{ marginBottom: '0em' }}>
           {expand && child.children.map((child: source) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
         </div>}

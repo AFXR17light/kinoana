@@ -23,24 +23,24 @@ export default function Layout({
   generateMetadata({ params: { path: pathFragments } });
   return (
     <html lang="en">
-      <body className={inter.className} style={{ margin: "6%", }}>
+      <body className={inter.className} style={{ margin: "6%", overflowX: 'auto', overflowY: 'hidden', }}>
         <NextTopLoader />
-        {/* <div style={{ overflowX: 'auto', overflowY: 'hidden', }}> */}<>
-          {pathFragments?.length !== 0 ?
-            (pathFragments?.map((fragment: string, index: number) => {
-              let cumulativePath = '';
-              for (let i = 0; i <= index; i++) {
-                cumulativePath += '/' + pathFragments[i];
-              }
-              return <span key={fragment} style={{ fontSize: '2em', fontWeight: 'bold', }}>
-                {index === 0 ? <Link href={'/'} style={{ textDecoration: 'none', }}>/</Link> : '/'}
-                {index === pathFragments?.length - 1 ?
-                  fragment : <Link href={cumulativePath} style={{ textDecoration: 'none', }}>{fragment}</Link>}
-              </span>
-            }))
-            : (<span style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }}>/</span>)}
-          <h1>{title}</h1>
-          {/* </div> */}</>
+        {/* <div style={{ overflowX: 'auto', overflowY: 'hidden', }}> */}
+        {pathFragments?.length !== 0 ?
+          (pathFragments?.map((fragment: string, index: number) => {
+            let cumulativePath = '';
+            for (let i = 0; i <= index; i++) {
+              cumulativePath += '/' + pathFragments[i];
+            }
+            return <span key={fragment} style={{ fontSize: '2em', fontWeight: 'bold', color: 'var(--normal)', }}>
+              {index === 0 ? <Link href={'/'} style={{ textDecoration: 'none', color: 'var(--normal)', }}>/</Link> : '/'}
+              {index === pathFragments?.length - 1 ?
+                fragment : <Link href={cumulativePath} style={{ textDecoration: 'none', color: 'var(--normal)', }}>{fragment}</Link>}
+            </span>
+          }))
+          : (<span style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }}>/</span>)}
+        <h1>{title}</h1>
+        {/* </div> */}
         {source && <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />}
         {children}
         {/* <BackToTopButton /> */}
