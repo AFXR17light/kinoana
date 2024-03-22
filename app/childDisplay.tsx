@@ -23,9 +23,9 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
   const frontmatter = child.frontmatter;
   if (frontmatter?.hide === true) return undefined;
   return (
-    <div key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting : 0}em` }}> {/* top right bottom left */}
+    <span key={child.path} style={{ margin: `0.25em 0 0.25em ${expand ? nesting * 2 : 0}em` }}> {/* top right bottom left */}
       {/* file */}
-      {(child.children || child.extension) && <>
+      {(child.children || child.content) && <>
         {!type.includes('noLink') &&
           <Link href={href} style={{ fontWeight: 'bold', }}>
             {!type.includes('noIcon') &&
@@ -54,9 +54,15 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
             {frontmatter.date && new Date(frontmatter.date).toLocaleDateString()}
           </span>}
         {type.includes('preview') && frontmatter?.preview && <div style={{ margin: '.5em 0 1em 0' }}>{frontmatter.preview}</div>}{/* top right bottom left */}
-        {child.children && <div key={child.path} style={{ marginBottom: '0em' }}>
-          {expand && child.children.map((child: source) => childDisplay(child, type, (expand ? nesting + 1 : -1)))}
-        </div>}
+        {child.children && expand &&
+          <div key={child.path} style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', height: '100%', margin: `0.25em 0 0.25em ${nesting * 2 + .5}em`, borderLeft: '3px dashed var(--grey)' }}></div>
+            {child.children.map((child: source) => {
+              return <div key={child.path} style={{ margin: '0.5em 0', }}>
+                {(child.children || child.content) && childDisplay(child, type, (expand ? nesting + 1 : -1))}
+              </div>
+            })}
+          </div>}
       </>}
       {/* content */}
       {type.includes('content') && content &&
@@ -65,7 +71,7 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
             {content}
           </div>
         </div>}
-    </div>
+    </span>
   );
 }
 

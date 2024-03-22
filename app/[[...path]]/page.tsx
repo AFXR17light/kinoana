@@ -53,7 +53,11 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       <div>
         {currentSource.content}
       </div>
-      {currentSource.children?.map((child) => childDisplay(child, currentSource?.frontmatter?.childrenDisplay))}
+      {currentSource.children?.map((child) => {
+        return <div key={child.path} style={{ margin: '0.5em 0'}}>
+          {childDisplay(child, currentSource?.frontmatter?.childrenDisplay)}
+          </div>
+      })}
     </Layout>
   )
 }
