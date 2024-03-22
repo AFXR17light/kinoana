@@ -56,9 +56,9 @@ const childDisplay = async (child: source, type: string | string[] = 'list', nes
         {type.includes('preview') && frontmatter?.preview && <span style={{ margin: '.5em 0 1em 0', display: 'block' }}>{frontmatter.preview}</span>}{/* top right bottom left */}
         {child.children && expand &&
           <span key={child.path} style={{ position: 'relative', display: 'block' }}>
-            <span style={{ position: 'absolute', height: '100%', margin: `0.25em 0 0.25em ${nesting * 2 + .5}em`, borderLeft: '3px dashed var(--grey)' }}/>
+            <span style={{ position: 'absolute', height: '100%', top: '-.5em', margin: `0.25em 0 0.25em ${nesting * 2 + .5}em`, borderLeft: '3px dashed var(--grey)' }}/>
             {child.children.map((child: source) => {
-              return <span key={child.path} style={{ margin: '0.5em 0' }}>
+              return <span key={child.path} style={{ margin: '0.5em 0', display: 'block' }}>
                 {(child.children || child.content) && childDisplay(child, type, (expand ? nesting + 1 : -1))}
               </span>
             })}
