@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-
-import ExpandableTabs from './components/ExpandableTabs'
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Error({
     error,
@@ -16,19 +16,13 @@ export default function Error({
     }, [error])
 
     return (
-        <div>
+        <div className={inter.className} style={{ margin: "6%", }}>
             <span style={{ fontSize: '2em', fontWeight: 'bold', color: 'var(--normal)', }}>
                 <Link href={'/'} style={{ textDecoration: 'none', color: 'var(--normal)', }}>/</Link>
                 error
             </span>
             <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />
-            <p>{error.name}: {error.message}</p>
-            <ExpandableTabs>
-                <div title='more info'>
-                    <p>digest: {error.digest}</p>
-                    <p>{error.stack}</p>
-                </div>
-            </ExpandableTabs>
+            <p>{error.message}</p>
         </div>
     )
 }

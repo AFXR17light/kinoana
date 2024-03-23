@@ -61,7 +61,7 @@ pre[class*="language-"] {
 	opacity: .7;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
 
 	.token.doctype .token.doctype-tag {
 		color: #569CD6;
@@ -74,12 +74,6 @@ pre[class*="language-"] {
 	.token.comment,
 	.token.prolog {
 		color: #6a9955;
-	}
-
-	.token.punctuation,
-	.language-html .language-css .token.punctuation,
-	.language-html .language-javascript .token.punctuation {
-		color: var(--normal);
 	}
 
 	.token.property,
@@ -291,7 +285,7 @@ pre[class*="language-"] {
 /* light theme */
 
 .token.parameter {
-	color: #1a6e85;
+	color: #2d98b5;
 }
 
 .token.console {
@@ -472,4 +466,10 @@ pre[class*="language-"] {
 .token.token.lf:before,
 .token.token.space:before {
 	color: hsla(230, 8%, 24%, 0.2);
+}
+
+.token.punctuation,
+.language-html .language-css .token.punctuation,
+.language-html .language-javascript .token.punctuation {
+	color: var(--normal);
 }

@@ -1,6 +1,6 @@
 export const icons = {
     pointer:
-        (<svg xmlns="http://www.w3.org/2000/svg" height="1em" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 13">
+        (<svg xmlns="http://www.w3.org/2000/svg" height="16px" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
         </svg>),
     mdx:
@@ -20,4 +20,16 @@ export const icons = {
         (<svg xmlns="http://www.w3.org/2000/svg" height="1em" fill="currentColor" className="bi bi-reply-fill" viewBox="0 0 16 16">
             <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z" />
         </svg>),
+}
+
+type IconName = 'pointer' | 'mdx' | 'md' | 'folder' | 'reply';
+
+export const Icon = ({ children, icon }: { children: React.ReactNode, icon?: IconName }) => {
+    if (!icon) return <>{children}</>;
+    return (
+        <span>
+            {icons[icon]}
+            {children}
+        </span>
+    );
 }

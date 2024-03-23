@@ -19,6 +19,7 @@ function ExpandableTabs({ children }: { children: React.ReactNode }) {
             style={{
               marginRight: '.5em',
               fontSize: '1em',
+              color: 'var(--normal)',
               backgroundColor: 'transparent',
               border: 'none',
               borderBottom: isExpanded ? ".25em solid" : ".1em solid",

@@ -11,9 +11,10 @@ import rehypeExternalLinks from 'rehype-external-links'
 
 import { frontmatter } from './types';
 // mdx components
+import Link from 'next/link';
 import Archives from './components/Archives';
-import { icons } from './icons';
-const { md, mdx, pointer, folder } = icons;
+import { Icon } from './icons';
+import ExpandableTabs from './components/ExpandableTabs';
 
 export default async function compileMdx (source: string) {
     return await compileMDX<frontmatter>({
@@ -25,7 +26,7 @@ export default async function compileMdx (source: string) {
                 rehypePlugins: [ [rehypeExternalLinks, {rel: ['nofollow', 'noopener'], target: ['blank']}], rehypePrism, rehypeKatex, ],
             }
         },
-        components: { Archives, icons }
+        components: { Link, Archives, Icon, ExpandableTabs }
     });
 }
 
