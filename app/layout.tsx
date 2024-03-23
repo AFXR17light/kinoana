@@ -23,6 +23,7 @@ export default function Layout({
   generateMetadata({ params: { path: pathFragments } });
   return (
     <html lang="en">
+      <head><meta name="darkreader-lock" /></head>
       <body className={inter.className} style={{ margin: "6%", }}>
         <NextTopLoader
           color="var(--link)"
