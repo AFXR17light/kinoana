@@ -8,6 +8,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { layoutProps } from "./types";
 import "./globals.css";
 import BackToTopButton from "./components/backToTop";
+import path from "path";
 
 export async function generateMetadata({ params: { path } }: { params: { path: string[] } }): Promise<Metadata> {
   // console.log('received', (path && path[path.length - 1]) || '/');
@@ -18,7 +19,7 @@ export async function generateMetadata({ params: { path } }: { params: { path: s
 }
 
 export default function Layout({
-  children, pathFragments, source, title,
+  children, pathFragments, title,
 }: layoutProps & { children: React.ReactNode }) {
   generateMetadata({ params: { path: pathFragments } });
   return (
@@ -45,7 +46,7 @@ export default function Layout({
           : (<span style={{ fontSize: '2em', fontWeight: 'bold', textDecoration: 'none', }}>/</span>)}
         <h1>{title}</h1>
         {/* </div> */}
-        {source && <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />}
+        {pathFragments && <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />}
         {children}
         {/* <BackToTopButton /> */}
       </body>
