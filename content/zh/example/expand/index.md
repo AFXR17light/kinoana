@@ -1,5 +1,5 @@
 ---
-title: 展开
+title: 展开子页面
 childrenDisplay: expand
 ---
 

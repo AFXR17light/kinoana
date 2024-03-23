@@ -65,87 +65,90 @@ const Archives = async () => {
     else return 0;
   });
   return (
-    <div
-      style={{
-        margin: '12% 0 0',
-        position: 'relative',
-      }}>
-      <div style={{ // timeline
-        borderLeft: '.2em solid var(--normal)',
-        position: 'absolute',
-        top: '1em',
-        left: '0',
-        height: '100%',
-      }} />
-      {sortedGroup.map(yearGroup => (
-        <div key={yearGroup.year}>
-          <div style={{ // year
-            margin: '3em 0' // up down / leaf right
-          }}>
-            <span style={{
-              margin: '1em',
-              fontWeight: 'bold',
-              fontSize: '1.25em',
-              color: 'var(--grey)',
-              position: 'relative',
+    <>
+      <div
+        style={{
+          margin: '12% 0 0',
+          position: 'relative',
+        }}>
+        <div style={{ // timeline
+          borderLeft: '.2em solid var(--normal)',
+          position: 'absolute',
+          top: '1em',
+          left: '0',
+          height: '100%',
+        }} />
+        {sortedGroup.map(yearGroup => (
+          <div key={yearGroup.year}>
+            <div style={{ // year
+              margin: '3em 0' // up down / leaf right
             }}>
-              <span style={{ // year dot: back
-                position: 'absolute',
-                top: '.4em',
-                left: '-1.225em',
-                width: '0.6em',
-                height: '0.6em',
-                backgroundColor: 'var(--normal)',
-                borderRadius: '50%',
-              }} />
-              <span style={{ // year dot: front
-                position: 'absolute',
-                top: '.5em',
-                left: '-1.125em',
-                width: '0.4em',
-                height: '0.4em',
-                backgroundColor: 'var(--grey)',
-                borderRadius: '50%',
-              }} />
-              {yearGroup.year}
-            </span>
+              <span style={{
+                margin: '1em',
+                fontWeight: 'bold',
+                fontSize: '1.25em',
+                color: 'var(--grey)',
+                position: 'relative',
+              }}>
+                <span style={{ // year dot: back
+                  position: 'absolute',
+                  top: '.4em',
+                  left: '-1.225em',
+                  width: '0.6em',
+                  height: '0.6em',
+                  backgroundColor: 'var(--normal)',
+                  borderRadius: '50%',
+                }} />
+                <span style={{ // year dot: front
+                  position: 'absolute',
+                  top: '.5em',
+                  left: '-1.125em',
+                  width: '0.4em',
+                  height: '0.4em',
+                  backgroundColor: 'var(--grey)',
+                  borderRadius: '50%',
+                }} />
+                {yearGroup.year}
+              </span>
+            </div>
+            {yearGroup.items.map(item => ( // each item
+              <article key={item.path}>
+                {item.content && !item.children &&
+                  <div style={{ borderBottom: '1px solid var(--border)', margin: '1.75em 0 .5em 0.2em', position: 'relative', transition: 'all .2s ease-in-out' }}>
+                    <span style={{ // item dot: back
+                      position: 'absolute',
+                      top: '.40em',
+                      left: '-.35em',
+                      width: '0.5em',
+                      height: '0.5em',
+                      backgroundColor: 'var(--normal)',
+                      borderRadius: '50%',
+                    }} />
+                    <span style={{ // item dot: front
+                      position: 'absolute',
+                      top: '.5em',
+                      left: '-.25em',
+                      width: '0.3em',
+                      height: '0.3em',
+                      backgroundColor: 'var(--grey)',
+                      borderRadius: '50%',
+                    }} />
+                    <div>
+                      <span style={{ // date
+                        color: 'var(--grey)',
+                        fontFamily: 'Times, SimSun, serif',
+                        margin: '0 .7em 0 .85em',
+                      }}>{monthDate(item.frontmatter?.date)}</span>
+                      {childDisplay(item, 'title')}
+                    </div>
+                  </div>}
+              </article>
+            ))}
           </div>
-          {yearGroup.items.map(item => ( // each item
-            <article key={item.path}>
-              {item.content && !item.children &&
-                <div style={{ borderBottom: '1px solid var(--border)', margin: '1.75em 0 .5em 0.2em', position: 'relative', transition: 'all .2s ease-in-out' }}>
-                  <span style={{ // item dot: back
-                    position: 'absolute',
-                    top: '.40em',
-                    left: '-.35em',
-                    width: '0.5em',
-                    height: '0.5em',
-                    backgroundColor: 'var(--normal)',
-                    borderRadius: '50%',
-                  }} />
-                  <span style={{ // item dot: front
-                    position: 'absolute',
-                    top: '.5em',
-                    left: '-.25em',
-                    width: '0.3em',
-                    height: '0.3em',
-                    backgroundColor: 'var(--grey)',
-                    borderRadius: '50%',
-                  }} />
-                  <div>
-                    <span style={{ // date
-                      color: 'var(--grey)',
-                      fontFamily: 'Times, SimSun, serif',
-                      margin: '0 .7em 0 .85em',
-                    }}>{monthDate(item.frontmatter?.date)}</span>
-                    {childDisplay(item, 'title')}
-                  </div>
-                </div>}
-            </article>
-          ))}
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+      <div style={{ height: '30vh' }} />
+    </>
   )
 }
 

@@ -10,7 +10,10 @@ import rehypeExternalLinks from 'rehype-external-links'
 // import "@fancyapps/ui/dist/fancybox/fancybox.css"
 
 import { frontmatter } from './types';
+// mdx components
 import Archives from './components/Archives';
+import { icons } from './icons';
+const { md, mdx, pointer, folder } = icons;
 
 export default async function compileMdx (source: string) {
     return await compileMDX<frontmatter>({
@@ -22,7 +25,7 @@ export default async function compileMdx (source: string) {
                 rehypePlugins: [ [rehypeExternalLinks, {rel: ['nofollow', 'noopener'], target: ['blank']}], rehypePrism, rehypeKatex, ],
             }
         },
-        components: { Archives }
+        components: { Archives, icons }
     });
 }
 

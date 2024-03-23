@@ -3,12 +3,12 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 
+import ExpandableTabs from './components/ExpandableTabs'
+
 export default function Error({
     error,
-    reset,
 }: {
     error: Error & { digest?: string }
-    reset: () => void
 }) {
     useEffect(() => {
         // Log the error to an error reporting service
@@ -19,17 +19,16 @@ export default function Error({
         <div>
             <span style={{ fontSize: '2em', fontWeight: 'bold', color: 'var(--normal)', }}>
                 <Link href={'/'} style={{ textDecoration: 'none', color: 'var(--normal)', }}>/</Link>
-                /error
+                error
             </span>
-            <p>Something went wrong!</p>
-            <button
-                onClick={
-                    // Attempt to recover by trying to re-render the segment
-                    () => reset()
-                }
-            >
-                Try again
-            </button>
+            <hr style={{ border: 'none', borderTop: 'solid .2em', borderRadius: '.1em', }} />
+            <p>{error.name}: {error.message}</p>
+            <ExpandableTabs>
+                <div title='more info'>
+                    <p>digest: {error.digest}</p>
+                    <p>{error.stack}</p>
+                </div>
+            </ExpandableTabs>
         </div>
     )
 }
