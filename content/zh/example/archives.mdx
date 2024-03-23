@@ -4,6 +4,7 @@ title: 归档
 
 这是一个归档页面，包含了所有的文章并按日期排序。没有日期的文章会被放到最后。
 
-要创建一个像这样的归档页面，在 markdown 内容中添加 `<Archives />` 即可。
+要创建一个像这样的归档页面，在 markdown 内容中添加 `<Archives />` 即可。  
+默认展示所有文章。若需展示特定路径下的文章，可以添加 `path` 属性，如 `<Archives path='example/post' />`。
 
-<Archives />
+<Archives path='zh/example/post' />

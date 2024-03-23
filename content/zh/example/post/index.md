@@ -1,5 +1,5 @@
 ---
-title: 博客文章列表
+title: 文章列表
 childrenDisplay: post
 sort: time
 ---
