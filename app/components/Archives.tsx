@@ -7,8 +7,17 @@ interface group {
   items: source[];
 }
 
-const Archives = async () => {
-  const originalSource = await fileSource();
+const Archives = async ({ path }: { path?: string }) => {
+  const pathFragments = path?.split('/').filter(fragment => fragment !== '');
+  let originalSource = await fileSource();
+  // get children of given path
+  if (pathFragments) {
+    let source = originalSource;
+    for (const fragment of pathFragments) {
+      source = source.children?.find(child => child.path.endsWith(fragment)) as source;
+    }
+    originalSource = source;
+  }
   let groupedItems: group[] = [];
   const getFlatSource = (source: source): source[] => {
     const flatSource: source[] = [];
