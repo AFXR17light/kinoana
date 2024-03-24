@@ -3,13 +3,13 @@ import { notFound } from "next/navigation";
 import { source } from '../types';
 import Layout from '../layout';
 import childDisplay from '../childDisplay';
-import { fileSource } from '../source';
+import { getSource } from '../source';
 
 export default async function Page({ params }: { params: { path: string[] } }) {
   let { path: pathFragments } = params;
   if (!pathFragments || (JSON.stringify(pathFragments) === JSON.stringify(['index']))) pathFragments = [];
   let pathTemp = pathFragments;
-  let source = await fileSource();
+  let source = await getSource();
   let currentSource: source | undefined;
   const find = (source: source, fpath: string[]): source | undefined => {
     if (fpath.length === 0) return source;
@@ -39,8 +39,13 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       }
     }
     // then sort by name
-    if (a.path < b.path) return -1;
-    if (a.path > b.path) return 1;
+    if (currentSource?.frontmatter?.sort === 'nameReverse') {
+      if (a.path < b.path) return 1;
+      if (a.path > b.path) return -1;
+    } else {
+      if (a.path < b.path) return -1;
+      if (a.path > b.path) return 1;
+    }
     return 0;
   });
 
@@ -51,12 +56,15 @@ export default async function Page({ params }: { params: { path: string[] } }) {
       title={currentSource.frontmatter?.title}
     >
       <div>
+        {currentSource.frontmatter?.date}
+      </div>
+      <div>
         {currentSource.content}
       </div>
       {currentSource.children?.map((child) => {
-        return <div key={child.path} style={{ margin: '0.5em 0'}}>
+        return <div key={child.path} style={{ margin: '0.5em 0' }}>
           {childDisplay(child, currentSource?.frontmatter?.childrenDisplay)}
-          </div>
+        </div>
       })}
     </Layout>
   )

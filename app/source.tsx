@@ -1,13 +1,32 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import git from 'isomorphic-git'
+import http from 'isomorphic-git/http/node'
 
 import { source } from './types';
 import compileMdx from './mdxCompiler';
+const USE_LOCAL = process.env.USE_LOCAL;
+const GIT_URL = process.env.GIT_URL;
+const GIT_USERNAME = process.env.GIT_USERNAME;
+const GIT_TOKEN = process.env.GIT_TOKEN;
 
-const contentDir = "content";
+let contentDir = "content";
 const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
 
-export async function fileSource(filePath: string = path.join(process.cwd(), contentDir), fileExtensions: string[] = acceptExtensions ): Promise<source> {
+export async function getSource() {
+    if (GIT_URL && !(USE_LOCAL === 'true')) {
+        contentDir = 'git-content';
+        const dir = path.join(process.cwd(), 'git-content');
+        await git.clone({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+        return fileSource(dir);
+    } else {
+        return fileSource();
+    }
+}
+
+export async function fileSource(filePath: string = path.join(process.cwd(), contentDir), fileExtensions: string[] = acceptExtensions): Promise<source> {
+    if (filePath === path.join(process.cwd(), contentDir, '.git') ||
+    filePath.replace(path.join(process.cwd(), contentDir), '').startsWith('__')) return { path: '', }; // ignore .git and __* files
     if ((await fs.stat(filePath)).isDirectory()) { // directory
         // index check
         let indexFile, indexExtension;

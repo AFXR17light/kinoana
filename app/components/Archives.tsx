@@ -1,7 +1,6 @@
-import { fileSource } from "../source";
+import { getSource } from "../source";
 import childDisplay from "../childDisplay";
 import { source } from "../types";
-import { Yaldevi } from "next/font/google";
 
 interface group {
   year: string;
@@ -10,7 +9,7 @@ interface group {
 
 const Archives = async ({ path }: { path?: string }) => {
   const pathFragments = path?.split('/').filter(fragment => fragment !== '');
-  let originalSource = await fileSource();
+  let originalSource = await getSource();
   // get children of given path
   if (pathFragments) {
     let source = originalSource;
