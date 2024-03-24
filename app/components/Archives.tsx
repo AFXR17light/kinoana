@@ -26,8 +26,10 @@ const Archives = async ({ path }: { path?: string }) => {
     if (source.children && (!source.frontmatter?.hide || rootNode)) {
       rootNode = false;
       source.children.forEach(child => {
-        flatSource.push(child);
-        flatSource.push(...getFlatSource(child));
+        if (!child.frontmatter?.hide) {
+          flatSource.push(child);
+          flatSource.push(...getFlatSource(child));
+        }
       });
     }
     return flatSource;

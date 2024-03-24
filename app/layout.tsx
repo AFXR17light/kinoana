@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Head from "next/head";
 import Link from 'next/link'
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
@@ -7,8 +6,6 @@ import NextTopLoader from 'nextjs-toploader';
 
 import { layoutProps } from "./types";
 import "./globals.css";
-import BackToTopButton from "./components/backToTop";
-import path from "path";
 
 export async function generateMetadata({ params: { path } }: { params: { path: string[] } }): Promise<Metadata> {
   // console.log('received', (path && path[path.length - 1]) || '/');
@@ -25,7 +22,7 @@ export default function Layout({
   return (
     <html lang="en">
       <head><meta name="darkreader-lock" /></head>
-      <body className={inter.className} style={{ margin: "6%", }}>
+      <body className={inter.className} style={{ margin: "6%", marginBottom: '30vh' }}>
         <NextTopLoader
           color="var(--link)"
           showSpinner={false}
