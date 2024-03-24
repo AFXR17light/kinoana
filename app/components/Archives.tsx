@@ -164,7 +164,6 @@ const Archives = async ({ path }: { path?: string }) => {
           )
         })}
       </div>
-      <div style={{ height: '30vh' }} />
     </>
   )
 }
