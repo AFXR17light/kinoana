@@ -19,4 +19,4 @@ The `index.md` or `index.mdx` in the folder will be converted into the content o
 Frontmatter configuration items:
 - `title` Page title
 - `date` Page date, such as `2024-03-19`
-- `childrenDisplay` Display method of subpages, optional values: `list`, `content`, `expand`, `none`, the default is `list`, see [example page](/example).
+- `childrenDisplay` Display method of subpages, optional values: `list`, `content`, `expand`, `none`, the default is `list`, see [example page](https://kinoana.vercel.app/example).
