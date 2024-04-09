@@ -15,8 +15,8 @@ const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
 
 export async function getSource() {
     if (GIT_URL && !(USE_LOCAL === 'true')) {
-        contentDir = 'git-content';
-        const dir = path.join(process.cwd(), 'git-content');
+        contentDir = 'tmp/git-content';
+        const dir = path.join(process.cwd(), contentDir);
         await git.clone({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
         return fileSource(dir);
     } else {
