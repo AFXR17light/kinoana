@@ -18,7 +18,7 @@ export async function getSource() {
     if (GIT_URL && !(USE_LOCAL === 'true')) {
         contentDir = 'tmp/git-content';
         fullContentDir = contentDir;
-        const dir = path.join(path.resolve(), "/tmp/git-content");
+        const dir = path.join("tmp", "git-content");
         await git.clone({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
         return fileSource(fullContentDir);
     } else {
