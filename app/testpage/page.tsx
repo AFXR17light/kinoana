@@ -9,11 +9,10 @@ const GIT_TOKEN = process.env.GIT_TOKEN
 
 export default async function Test() {
     const dir = path.join(process.cwd(), 'git-test')
-    await git.fetch({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
-    console.log(dir);
+    // await git.fetch({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+    // console.log(dir);
     if (USE_LOCAL) return <div>
-        Test Page
-        <div>cmessage: { }</div>
+        Test Page (Local)
     </div>;
     else return <div>This is a test page.</div>
 }
