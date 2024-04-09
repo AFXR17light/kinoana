@@ -11,22 +11,23 @@ const GIT_USERNAME = process.env.GIT_USERNAME;
 const GIT_TOKEN = process.env.GIT_TOKEN;
 
 let contentDir = "content";
+let fullContentDir = path.join(process.cwd(), contentDir);
 const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
 
 export async function getSource() {
     if (GIT_URL && !(USE_LOCAL === 'true')) {
         contentDir = 'tmp/git-content';
-        const dir = path.join(process.cwd(), contentDir);
-        await git.clone({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
-        return fileSource(dir);
+        fullContentDir = contentDir;
+        await git.clone({ fs, http, dir: fullContentDir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+        return fileSource(fullContentDir);
     } else {
         return fileSource();
     }
 }
 
-export async function fileSource(filePath: string = path.join(process.cwd(), contentDir), fileExtensions: string[] = acceptExtensions): Promise<source> {
-    if (filePath === path.join(process.cwd(), contentDir, '.git') ||
-    filePath.replace(path.join(process.cwd(), contentDir), '').startsWith('__')) return { path: '', }; // ignore .git and __* files
+export async function fileSource(filePath: string = fullContentDir, fileExtensions: string[] = acceptExtensions): Promise<source> {
+    if (filePath === path.join(fullContentDir, '.git') ||
+    filePath.replace(fullContentDir, '').startsWith('__')) return { path: '', }; // ignore .git and __* files
     if ((await fs.stat(filePath)).isDirectory()) { // directory
         // index check
         let indexFile, indexExtension;
@@ -45,7 +46,7 @@ export async function fileSource(filePath: string = path.join(process.cwd(), con
         let singleIndex = false;
         if (files.length === 1 && (files[0] === 'index.mdx' || files[0] === 'index.md')) singleIndex = true;
         return { // directory
-            path: filePath.replace(path.join(process.cwd(), contentDir), ''),
+            path: filePath.replace(fullContentDir, ''),
             extension: indexExtension,
             content: content,
             frontmatter: frontmatter,
@@ -54,7 +55,7 @@ export async function fileSource(filePath: string = path.join(process.cwd(), con
     } else { // file
         const filePathObj = path.parse(filePath);
         if (filePathObj.name !== 'index' && fileExtensions.includes(filePathObj.ext)) {
-            const strippedFilePath = path.join(filePathObj.dir, filePathObj.name).replace(path.join(process.cwd(), contentDir), '');
+            const strippedFilePath = path.join(filePathObj.dir, filePathObj.name).replace(fullContentDir, '');
             const fileContent = await fs.readFile(filePath, 'utf8');
             const { frontmatter, content: compiledContent } = await compileMdx(fileContent);
             return { path: strippedFilePath, extension: filePathObj.ext, content: compiledContent, frontmatter: frontmatter }; // file
