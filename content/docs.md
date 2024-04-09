@@ -13,7 +13,8 @@ Local development:
 3. Visit: `http://localhost:3000`
 
 Deployment:  
-Deployment uses Vercel, just connect the repository to Vercel.
+Deploy to Vercel is the simplest way. You can also deploy to other platforms that support Next.js.  
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/AFXR17light/kinoana)
 
 ## Content Management
 
