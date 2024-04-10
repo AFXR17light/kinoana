@@ -39,15 +39,18 @@ All the frontmatter configuration items are optional, and can also be without fr
 You can use a separated git repository to store content.
 
 1. Create a new repository to store content. Treat the content repository the same as the `content` folder.
-2. Get the url of the content repository, and a personal access token from GitHub.
+2. Get the url of the content repository, and a personal access token from GitHub or password from other git platforms.
 3. Add the following environment variables:
 
 ```bash
 GIT_URL = <content-repo-url>
-GIT_USERNAME = <your-github-username>
-GIT_TOKEN = <your-github-token>
+GIT_USERNAME = <git-username>
+GIT_TOKEN = <github-token-or-password>
 ```
 
 Then the content will be fetched from the content repository instead of the `content` folder.
 
-Please DO NOT run the development server with the git related environment variables set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
+Note:
+
+- This feature currently only supports Vercel runtime;
+- Please do not run the development server with the git related environment variables set in `.env.local`, as it will clone the content repository to the root directory of local storage.

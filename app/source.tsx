@@ -18,7 +18,11 @@ export async function getSource() {
     if (GIT_URL && !(USE_LOCAL === 'true')) {
         contentDir = '/tmp/git-content';
         fullContentDir = contentDir;
-        await git.clone({ fs, http, dir: contentDir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+        if (await fs.stat(path.join(contentDir, '.git')).catch(() => false)) {
+            await git.pull({ fs, http, dir: contentDir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }), author: { name: GIT_USERNAME } });
+        } else {
+            await git.clone({ fs, http, dir: contentDir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+        }
         return fileSource(fullContentDir);
     } else {
         return fileSource();
@@ -27,7 +31,7 @@ export async function getSource() {
 
 export async function fileSource(filePath: string = fullContentDir, fileExtensions: string[] = acceptExtensions): Promise<source> {
     if (filePath === path.join(fullContentDir, '.git') ||
-    filePath.replace(fullContentDir, '').startsWith('__')) return { path: '', }; // ignore .git and __* files
+        filePath.replace(fullContentDir, '').startsWith('__')) return { path: '', }; // ignore .git and __* files
     if ((await fs.stat(filePath)).isDirectory()) { // directory
         // index check
         let indexFile, indexExtension;
