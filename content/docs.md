@@ -50,4 +50,4 @@ GIT_TOKEN = <your-github-token>
 
 Then the content will be fetched from the content repository instead of the `content` folder.
 
-Please do not run the development server with the git related environment variable set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
+Please DO NOT run the development server with the git related environment variables set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
