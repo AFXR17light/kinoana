@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { Octokit } from "@octokit/rest";
+import git from 'isomorphic-git'
+import http from 'isomorphic-git/http/node'
 
 import { source } from './types';
 import compileMdx from './mdxCompiler';
@@ -14,32 +15,21 @@ let fullContentDir = path.join(process.cwd(), contentDir);
 const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
 
 export async function getSource() {
-    if (GIT_URL && GIT_USERNAME && !(USE_LOCAL === 'true')) {
-        const owner = GIT_USERNAME;
-        const repo = GIT_URL;
-        const path = contentDir;
-        return getGithubSource(owner, repo, path);
+    if (GIT_URL && !(USE_LOCAL === 'true')) {
+        contentDir = '/tmp/git-content';
+        fullContentDir = contentDir;
+        const dir = `/tmp/git-content`;
+        await git.clone({ fs, http, dir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }) });
+        console.log('Cloned git repository');
+        return fileSource(fullContentDir);
     } else {
-        return getFileSource();
+        return fileSource();
     }
 }
 
-export async function getGithubSource(owner: string, repo: string, path: string) {
-    const octokit = new Octokit({
-        auth: GIT_TOKEN,
-    });
-    const response = await octokit.repos.getContent({
-        owner,
-        repo,
-        path,
-    });
-    console.log(response.data);
-    return response.data;
-}
-
-export async function getFileSource(filePath: string = fullContentDir, fileExtensions: string[] = acceptExtensions): Promise<source> {
+export async function fileSource(filePath: string = fullContentDir, fileExtensions: string[] = acceptExtensions): Promise<source> {
     if (filePath === path.join(fullContentDir, '.git') ||
-        filePath.replace(fullContentDir, '').startsWith('__')) return { path: '', }; // ignore .git and __* files
+    filePath.replace(fullContentDir, '').startsWith('__')) return { path: '', }; // ignore .git and __* files
     if ((await fs.stat(filePath)).isDirectory()) { // directory
         // index check
         let indexFile, indexExtension;
@@ -48,7 +38,7 @@ export async function getFileSource(filePath: string = fullContentDir, fileExten
             indexFile = await fs.readFile(path.join(filePath, files.includes('index.mdx') ? 'index.mdx' : 'index.md'), 'utf8');
             indexExtension = files.includes('index.mdx') ? '.mdx' : '.md';
         }
-        const children = await Promise.all(files.map(fileName => getFileSource(path.join(filePath, fileName), fileExtensions)));
+        const children = await Promise.all(files.map(fileName => fileSource(path.join(filePath, fileName), fileExtensions)));
         let content, frontmatter;
         if (indexFile) {
             const result = await compileMdx(indexFile);
