@@ -1,6 +1,6 @@
 ## Introduction
 
-Kinoana is a personal wiki and blog. It is based on [Next.js](https://nextjs.org/), using Markdown / MDX as source files, and generating website content through the folder structure.
+Kinoana is a personal wiki and blog based on [Next.js](https://nextjs.org/). It uses Markdown / MDX as source files, and generating website content through the folder structure.
 
 ## Usage
 
@@ -43,11 +43,11 @@ You can use a separated git repository to store content.
 3. Add the following environment variables:
 
 ```bash
+GIT_URL = <content-repo-url>
 GIT_USERNAME = <your-github-username>
 GIT_TOKEN = <your-github-token>
-GIT_CONTENT_REPO = <content-repo-url>
 ```
 
 Then the content will be fetched from the content repository instead of the `content` folder.
 
-Please do not run the development server with the `GIT_CONTENT_REPO` environment variable set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
+Please do not run the development server with the git related environment variable set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
