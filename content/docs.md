@@ -13,13 +13,16 @@ Please clone or fork the repository to start using it.
 3. Visit: `http://localhost:3000`
 
 **Deployment**:  
-[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAFXR17light%2Fkinoana) is the simplest way.   
+[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAFXR17light%2Fkinoana) is the simplest way.  
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAFXR17light%2Fkinoana)  
 You can also deploy to other platforms that support Next.js.
 
 ## Content Management
 
-Use the `content` folder to store website content, the folder structure will be converted into website routes;  
-The `index.md` or `index.mdx` in the folder will be converted into the content of the folder page, which can be configured in `frontmatter`.
+Use the `content` folder to store website content. The folder structure will be converted into website routes;  
+The `index.md` or `index.mdx` in the folder will be converted into the content of the folder page.
+
+All the pages can be configured in `frontmatter`.
 
 Frontmatter configuration items:
 
