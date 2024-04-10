@@ -4,7 +4,7 @@ Kinoana is a personal wiki and blog. It is based on [Next.js](https://nextjs.org
 
 ## Usage
 
-Please clone or fork the repository to start using it.
+Please clone the repository to start using.
 
 **Local development**:  
 
@@ -12,8 +12,9 @@ Please clone or fork the repository to start using it.
 2. Start the development server: `pnpm dev`
 3. Visit: `http://localhost:3000`
 
-**Deployment**:  
-[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAFXR17light%2Fkinoana) is the simplest way.  
+**Deployment**:
+
+Deploy with Vercel is the simplest way.  
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAFXR17light%2Fkinoana)  
 You can also deploy to other platforms that support Next.js.
 
@@ -48,3 +49,5 @@ GIT_CONTENT_REPO = <content-repo-url>
 ```
 
 Then the content will be fetched from the content repository instead of the `content` folder.
+
+Please do not run the development server with the `GIT_CONTENT_REPO` environment variable set, as it will clone the content repository, which may cause conflicts with the 'kinoana' repository.
