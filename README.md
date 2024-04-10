@@ -32,3 +32,19 @@ Frontmatter configuration items:
 - `childrenDisplay` Display method of subpages, optional values: `list`, `post`, `content`, `expand`, `none`, the default is `list`, see [example page](https://kinoana.vercel.app/example).
 
 All the frontmatter configuration items are optional, and can also be without frontmatter.
+
+### Content from separated git repository (experimental)
+
+You can use a separated git repository to store content.
+
+1. Create a new repository to store content. Treat the content repository the same as the `content` folder.
+2. Get the url of the content repository, and a personal access token from GitHub.
+3. Add the following environment variables:
+
+```bash
+GIT_USERNAME = <your-github-username>
+GIT_TOKEN = <your-github-token>
+GIT_CONTENT_REPO = <content-repo-url>
+```
+
+Then the content will be fetched from the content repository instead of the `content` folder.
