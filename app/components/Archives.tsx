@@ -97,7 +97,7 @@ const Archives = async ({ path }: { path?: string }) => {
           return (
             <div key={yearGroup.year}>
               <div style={{ // year
-                margin: '3em 0' // up down / leaf right
+                margin: '3em 0' // up down / left right
               }}>
                 <span style={{
                   margin: '1em',

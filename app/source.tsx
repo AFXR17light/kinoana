@@ -5,7 +5,7 @@ import http from 'isomorphic-git/http/node'
 
 import { source } from './types';
 import compileMdx from './mdxCompiler';
-const USE_LOCAL = process.env.USE_LOCAL;
+const LOCAL_SCR_TEST = process.env.LOCAL_SCR_TEST;
 const GIT_URL = process.env.GIT_URL;
 const GIT_USERNAME = process.env.GIT_USERNAME;
 const GIT_TOKEN = process.env.GIT_TOKEN;
@@ -15,8 +15,8 @@ let fullContentDir = path.join(process.cwd(), contentDir);
 const acceptExtensions = ['.mdx', '.md']; //mdx has higher priority
 
 export async function getSource() {
-    if (GIT_URL && !(USE_LOCAL === 'true')) {
-        contentDir = '/tmp/git-content';
+    if (GIT_URL && (LOCAL_SCR_TEST === 'true' || process.env.NODE_ENV === 'production')) {
+        LOCAL_SCR_TEST === 'true' ? contentDir = path.join(process.cwd(), 'git-content') : contentDir = '/tmp/git-content';
         fullContentDir = contentDir;
         if (await fs.stat(path.join(contentDir, '.git')).catch(() => false)) {
             await git.pull({ fs, http, dir: contentDir, url: GIT_URL, onAuth: () => ({ username: GIT_USERNAME, password: GIT_TOKEN }), author: { name: GIT_USERNAME } });

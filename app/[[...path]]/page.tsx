@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import path from 'path';
 
 import { source } from '../types';
 import Layout from '../layout';
@@ -10,12 +11,14 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   if (!pathFragments || (JSON.stringify(pathFragments) === JSON.stringify(['index']))) pathFragments = [];
   let pathTemp = pathFragments;
   let source = await getSource();
+  // console.log(JSON.stringify(source));
   let currentSource: source | undefined;
   const find = (source: source, fpath: string[]): source | undefined => {
     if (fpath.length === 0) return source;
     else {
       const fragment = fpath[0];
-      const sub = source.children?.find((child) => child?.path?.endsWith(fragment || ''));
+      console.log(fragment);
+      const sub = source.children?.find((child) => path.basename(child?.path) === fragment);
       if (!sub) return undefined;
       source = sub;
       return find(source, fpath.slice(1));

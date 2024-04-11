@@ -34,9 +34,9 @@ Frontmatter configuration items:
 
 All the frontmatter configuration items are optional, and can also be without frontmatter.
 
-### Content from separated git repository (experimental)
+### Separated content repository (experimental)
 
-You can use a separated git repository to store content.
+You can use a separated git repository to store content, and push changes directly to the content repository. The contents on the website will update automatically without the need to redeploy.
 
 1. Create a new repository to store content. Treat the content repository the same as the `content` folder.
 2. Get the url of the content repository, and a personal access token from GitHub or password from other git platforms.
@@ -52,5 +52,4 @@ Then the content will be fetched from the content repository instead of the `con
 
 Note:
 
-- This feature currently only supports Vercel runtime;
-- Please do not run the development server with the git related environment variables set in `.env.local`, as it will clone the content repository to the root directory of local storage.
+This feature currently only supports Vercel runtime. Please do not run the development server with the git related environment variables set in `.env.local`.
